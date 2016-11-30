@@ -3,7 +3,6 @@
  */
 
 package com.team7.texasHoldem.game;
-
 import com.team7.texasHoldem.enums.CardRankEnum;
 import com.team7.texasHoldem.enums.CardSuitEnum;
 

@@ -7,12 +7,15 @@ import com.team7.texasHoldem.enums.CardRankEnum;
 import com.team7.texasHoldem.enums.CardSuitEnum;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Deck {
 
     private ArrayList<Card> cards;
+    private Random random;
 
     public Deck() {
+        this.random = new Random();
         createDeck();
     }
 
@@ -23,6 +26,10 @@ public class Deck {
                 cards.add(new Card(suit, rank));
             }
         }
+    }
+
+    public Card pop() {
+        return cards.remove(random.nextInt(cards.size()));
     }
 
     public void printDeck() {
