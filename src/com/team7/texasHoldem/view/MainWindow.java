@@ -5,6 +5,12 @@
 package com.team7.texasHoldem.view;
 
 import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+
 import java.awt.*;
 import java.awt.event.*;
 import javafx.application.Platform;
@@ -16,21 +22,14 @@ public class MainWindow {
 
 
     JFrame frame;
-    JLabel urlFormLabel;
-    JPanel inputPanel, logPanel;
-    JFXPanel jfxWebviewPanel;
-    JTextField urlForm;
-    JButton goButton, showCacheButton, clearCacheButton, helpButton;
+    JPanel inputPanel, logPanel, cardPanel;
+//    JFXPanel jfxWebviewPanel;
+    JButton dealButton, showCacheButton, clearCacheButton, helpButton;
     JScrollPane scroll;
-    JComboBox<String> replacementAlgorithmsCb;
-    JComboBox<Integer> cacheSizeCb;
+    JTextPane cardPane;
+    
 
     SystemLog systemLog = new SystemLog();
-
-    String[] replacementAlgorithms = {"LRU","MRU","RR"};
-    Integer[] cacheSize = {1,2,3,4,5};
-    ComboBoxParameters cbParams = new ComboBoxParameters(cacheSize, replacementAlgorithms);
-
 
     public static void main(String[] args) {
         //Take the menu bar off the JFrame
@@ -51,52 +50,40 @@ public class MainWindow {
         //Create panels
         inputPanel = new JPanel();
         logPanel = new JPanel();
+        cardPanel = new JPanel();
 
-        //Using Event Dispatch Thread for modifying a Swing components
-        jfxWebviewPanel = new JFXPanel();
-        //Default scene
-        Platform.runLater(() -> { //Interactions with JFXPanel should take place on the JavaFX Application Thread
-            WebView webView = new WebView();
-            webView.setMaxSize(600.0, 400.0);
-            jfxWebviewPanel.setScene(new Scene(webView));
-            try {
-                webView.getEngine().load("");
-            } catch (Exception e) {
-                e.printStackTrace(System.out);
-            }
-        });
+//        //Using Event Dispatch Thread for modifying a Swing components
+//        jfxWebviewPanel = new JFXPanel();
+//        //Default scene
+//        Platform.runLater(() -> { //Interactions with JFXPanel should take place on the JavaFX Application Thread
+//            WebView webView = new WebView();
+//            webView.setMaxSize(600.0, 400.0);
+//            jfxWebviewPanel.setScene(new Scene(webView));
+//            try {
+//                webView.getEngine().load("");
+//            } catch (Exception e) {
+//                e.printStackTrace(System.out);
+//            }
+//        });
 
         //Instantiate inputPanel interface
-        replacementAlgorithmsCb = new JComboBox<>(cbParams.getReplacementAlgorithms());
-        replacementAlgorithmsCb.setVisible(true);
 
-        cacheSizeCb = new JComboBox<>(cbParams.getCacheSizeRange());
-        cacheSizeCb.setSelectedItem(1);
-        cacheSizeCb.setVisible(true);
-        cacheSizeCb.addActionListener(new cacheSizeCbListener());
+        dealButton = new JButton("New Game");
+        dealButton.addActionListener(new dealButtonListener());
 
-        urlFormLabel = new JLabel("Enter a URL:");
-        urlForm = new JTextField(12);
-        urlForm.addKeyListener(new URLFormListener());
-
-        goButton = new JButton("Go");
-        goButton.addActionListener(new GoButtonListener());
-
-        showCacheButton = new JButton("Show Cache");
+        showCacheButton = new JButton("Fold");
         showCacheButton.addActionListener(new ShowCacheButtonListener());
 
-        clearCacheButton = new JButton("Clear Cache");
+        clearCacheButton = new JButton("fuck");
         clearCacheButton.addActionListener(new ClearCacheButtonListener());
 
         helpButton = new JButton("Help");
         helpButton.addActionListener(new HelpButtonListener());
 
         //Append inputPanel interface
-        inputPanel.add(urlFormLabel);
-        inputPanel.add(urlForm);
-        inputPanel.add(replacementAlgorithmsCb);
-        inputPanel.add(cacheSizeCb);
-        inputPanel.add(goButton);
+        //TODO: 
+        
+        inputPanel.add(dealButton);
         inputPanel.add(showCacheButton);
         inputPanel.add(clearCacheButton);
         inputPanel.add(helpButton);
@@ -104,13 +91,30 @@ public class MainWindow {
         //Instantiate logPanel interface
         scroll = new JScrollPane(systemLog.getSystemLogTextArea());
 
+
+        Font font1 = new Font("SansSerif", Font.BOLD, 70);
+        cardPane = new JTextPane();
+        cardPanel.add(cardPane);
+
+        
+        cardPane.setFont(font1);
+        
+        appendtoPane(cardPane, "10\u2660 ", Color.BLACK);
+        appendtoPane(cardPane, "5\u2665 ", Color.RED);
+        appendtoPane(cardPane, "9\u2663 ", Color.BLACK);
+        appendtoPane(cardPane, "A\u2666 ", Color.RED);
+
+        cardPane.setEditable(false);
+        
         //Append logPanel interface
         logPanel.add(scroll);
+        
 
         //Add panels to frame
         frame.getContentPane().add(BorderLayout.SOUTH, inputPanel);
         frame.getContentPane().add(BorderLayout.CENTER, logPanel);
-        frame.getContentPane().add(BorderLayout.NORTH, jfxWebviewPanel);
+        frame.getContentPane().add(BorderLayout.NORTH, cardPanel);
+       // frame.getContentPane().add(BorderLayout.NORTH, jfxWebviewPanel);
 
 
         //Frame parameters
@@ -120,27 +124,24 @@ public class MainWindow {
         frame.setVisible(true);
     }
 
-    class URLFormListener implements KeyListener {
-        @Override
-        public void keyPressed(KeyEvent event) {
-            if (event.getKeyCode()==KeyEvent.VK_ENTER){
-                goButton.doClick();
-            }
-        }
-        @Override
-        public void keyReleased(KeyEvent event) {
-            //Abstract method stub
-        }
-        @Override
-        public void keyTyped(KeyEvent event) {
-            //Abstract method stub
-        }
-    }
+    private void appendtoPane(JTextPane tp, String msg, Color c) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-    class GoButtonListener implements ActionListener {
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        int len = tp.getDocument().getLength();
+        tp.setCaretPosition(len);
+        tp.setCharacterAttributes(aset, false);
+        tp.replaceSelection(msg);
+		
+	}
+
+	class dealButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
+            systemLog.dealCards();
         }
     }
 
