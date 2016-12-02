@@ -5,6 +5,13 @@
 package com.team7.texasHoldem.view;
 
 import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
+
 import java.awt.*;
 import java.awt.event.*;
 import javafx.application.Platform;
@@ -15,22 +22,16 @@ import javafx.scene.web.WebView;
 public class MainWindow {
 
 
+	JFrame frame2;
     JFrame frame;
-    JLabel urlFormLabel;
-    JPanel inputPanel, logPanel;
-    JFXPanel jfxWebviewPanel;
-    JTextField urlForm;
-    JButton goButton, showCacheButton, clearCacheButton, helpButton;
+    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, rightCardPanel, cardPanel, controlPanel;
+//    JFXPanel jfxWebviewPanel;
+    JButton dealButton, showCacheButton, clearCacheButton, helpButton;
     JScrollPane scroll;
-    JComboBox<String> replacementAlgorithmsCb;
-    JComboBox<Integer> cacheSizeCb;
+    JTextPane cardPane, cardPane2, cardPane3, cardPane4, cardPane5;
+    
 
     SystemLog systemLog = new SystemLog();
-
-    String[] replacementAlgorithms = {"LRU","MRU","RR"};
-    Integer[] cacheSize = {1,2,3,4,5};
-    ComboBoxParameters cbParams = new ComboBoxParameters(cacheSize, replacementAlgorithms);
-
 
     public static void main(String[] args) {
         //Take the menu bar off the JFrame
@@ -45,58 +46,56 @@ public class MainWindow {
     public void buildGUI() {
 
         //Create frame
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    	frame = new JFrame();
+    	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //Create panels
         inputPanel = new JPanel();
         logPanel = new JPanel();
+        
+        cardPanel = new JPanel();
+        
+        controlPanel = new JPanel();
+        topCardPanel = new JPanel();
+        bottomCardPanel = new JPanel();
+        centerCardPanel = new JPanel();
 
-        //Using Event Dispatch Thread for modifying a Swing components
-        jfxWebviewPanel = new JFXPanel();
-        //Default scene
-        Platform.runLater(() -> { //Interactions with JFXPanel should take place on the JavaFX Application Thread
-            WebView webView = new WebView();
-            webView.setMaxSize(600.0, 400.0);
-            jfxWebviewPanel.setScene(new Scene(webView));
-            try {
-                webView.getEngine().load("");
-            } catch (Exception e) {
-                e.printStackTrace(System.out);
-            }
-        });
+//        //Using Event Dispatch Thread for modifying a Swing components
+//        jfxWebviewPanel = new JFXPanel();
+//        //Default scene
+//        Platform.runLater(() -> { //Interactions with JFXPanel should take place on the JavaFX Application Thread
+//            WebView webView = new WebView();
+//            webView.setMaxSize(600.0, 400.0);
+//            jfxWebviewPanel.setScene(new Scene(webView));
+//            try {
+//                webView.getEngine().load("");
+//            } catch (Exception e) {
+//                e.printStackTrace(System.out);
+//            }
+//        });
 
         //Instantiate inputPanel interface
-        replacementAlgorithmsCb = new JComboBox<>(cbParams.getReplacementAlgorithms());
-        replacementAlgorithmsCb.setVisible(true);
 
-        cacheSizeCb = new JComboBox<>(cbParams.getCacheSizeRange());
-        cacheSizeCb.setSelectedItem(1);
-        cacheSizeCb.setVisible(true);
-        cacheSizeCb.addActionListener(new cacheSizeCbListener());
+        
+        //TODO: Button functions. New Game should be disabled when game has started
+        //		Raise should be disabled when not enough money
+        //		Call should be disabled when blind is above previous bet
+        dealButton = new JButton("New Game");
+        dealButton.addActionListener(new dealButtonListener());
 
-        urlFormLabel = new JLabel("Enter a URL:");
-        urlForm = new JTextField(12);
-        urlForm.addKeyListener(new URLFormListener());
-
-        goButton = new JButton("Go");
-        goButton.addActionListener(new GoButtonListener());
-
-        showCacheButton = new JButton("Show Cache");
+        showCacheButton = new JButton("Fold");
         showCacheButton.addActionListener(new ShowCacheButtonListener());
 
-        clearCacheButton = new JButton("Clear Cache");
+        clearCacheButton = new JButton("Raise");
         clearCacheButton.addActionListener(new ClearCacheButtonListener());
 
-        helpButton = new JButton("Help");
+        helpButton = new JButton("Call");
         helpButton.addActionListener(new HelpButtonListener());
 
         //Append inputPanel interface
-        inputPanel.add(urlFormLabel);
-        inputPanel.add(urlForm);
-        inputPanel.add(replacementAlgorithmsCb);
-        inputPanel.add(cacheSizeCb);
-        inputPanel.add(goButton);
+        //TODO: 
+        
+        inputPanel.add(dealButton);
         inputPanel.add(showCacheButton);
         inputPanel.add(clearCacheButton);
         inputPanel.add(helpButton);
@@ -104,43 +103,120 @@ public class MainWindow {
         //Instantiate logPanel interface
         scroll = new JScrollPane(systemLog.getSystemLogTextArea());
 
+
+        Font font1 = new Font("SansSerif", Font.BOLD, 70);
+        cardPane = new JTextPane();
+        cardPane2 = new JTextPane();
+        cardPane3 = new JTextPane();
+        cardPane4 = new JTextPane();
+        cardPane5 = new JTextPane();
+        
+        cardPanel.setLayout(new BorderLayout());
+        cardPanel.add(topCardPanel, BorderLayout.NORTH);
+        topCardPanel.setLayout(new BorderLayout());
+        topCardPanel.add(cardPane, BorderLayout.EAST);
+        topCardPanel.add(cardPane2, BorderLayout.WEST);
+        
+        controlPanel.setLayout(new BorderLayout());
+        controlPanel.add(logPanel, BorderLayout.NORTH);
+        controlPanel.add(inputPanel, BorderLayout.SOUTH);
+        
+        cardPanel.add(bottomCardPanel, BorderLayout.SOUTH);
+        bottomCardPanel.setLayout(new BorderLayout());
+        bottomCardPanel.add(cardPane3, BorderLayout.EAST);
+        bottomCardPanel.add(cardPane4, BorderLayout.WEST);
+        
+        cardPanel.add(centerCardPanel, BorderLayout.CENTER);
+        centerCardPanel.setLayout(new BorderLayout());
+        centerCardPanel.add(cardPane5, BorderLayout.CENTER);
+
+
+        StyledDocument doc = cardPane5.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        
+        //bottomCardPanel.add(cardPane2);
+        //rightCardPanel.add(cardPane3);
+
+        cardPane.setFont(font1);
+        cardPane2.setFont(font1);
+        cardPane3.setFont(font1);
+        cardPane4.setFont(font1);
+        cardPane5.setFont(font1);
+        
+        String spade = "\u2660";
+        String heart = "\u2665";
+        String diamond = "\u2666";
+        String club = "\u2663";
+        
+        appendtoPane(cardPane, "10" + spade, Color.BLACK);
+        appendtoPane(cardPane, "5" + heart, Color.RED);
+
+        appendtoPane(cardPane2, "9" + club, Color.BLACK);
+        appendtoPane(cardPane2, "A" + diamond, Color.RED);
+        
+        appendtoPane(cardPane3, "4" + spade, Color.BLACK);
+        appendtoPane(cardPane3, "2" + heart, Color.RED);
+
+        appendtoPane(cardPane4, "8" + club, Color.BLACK);
+        appendtoPane(cardPane4, "2" + diamond, Color.RED);
+        
+        appendtoPane(cardPane5, "\n\n10" + club + " ", Color.BLACK);
+        appendtoPane(cardPane5, "A" + heart + " ", Color.RED);
+        appendtoPane(cardPane5, "Q" + spade + " ", Color.BLACK);
+
+        
+        cardPane.setEditable(false);
+        cardPane2.setEditable(false);
+        cardPane3.setEditable(false);
+        cardPane4.setEditable(false);
+        cardPane5.setEditable(false);
+        
         //Append logPanel interface
         logPanel.add(scroll);
-
+        
+        
         //Add panels to frame
-        frame.getContentPane().add(BorderLayout.SOUTH, inputPanel);
-        frame.getContentPane().add(BorderLayout.CENTER, logPanel);
-        frame.getContentPane().add(BorderLayout.NORTH, jfxWebviewPanel);
+        //frame.getContentPane().add(BorderLayout.CENTER, bottomCardPanel);
+        frame.setLayout(new BorderLayout());
+        
+        //frame.getContentPane().add(BorderLayout.SOUTH, inputPanel);
+        frame.getContentPane().add(BorderLayout.CENTER, cardPanel);
+        frame.getContentPane().add(BorderLayout.SOUTH, controlPanel);
+
+        //frame.getContentPane().add(BorderLayout.SOUTH, logPanel);
+        //frame.getContentPane().add(BorderLayout.NORTH, topCardPanel);
+       // frame.getContentPane().add(BorderLayout.NORTH, jfxWebviewPanel);
 
 
         //Frame parameters
         frame.setSize(809, 601);
         frame.setTitle("Local Web Cacher - TTD Exercise");
+    	
         frame.setResizable(false);
         frame.setVisible(true);
+        
     }
 
-    class URLFormListener implements KeyListener {
-        @Override
-        public void keyPressed(KeyEvent event) {
-            if (event.getKeyCode()==KeyEvent.VK_ENTER){
-                goButton.doClick();
-            }
-        }
-        @Override
-        public void keyReleased(KeyEvent event) {
-            //Abstract method stub
-        }
-        @Override
-        public void keyTyped(KeyEvent event) {
-            //Abstract method stub
-        }
-    }
+    private void appendtoPane(JTextPane tp, String msg, Color c) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-    class GoButtonListener implements ActionListener {
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        int len = tp.getDocument().getLength();
+        tp.setCaretPosition(len);
+        tp.setCharacterAttributes(aset, false);
+        tp.replaceSelection(msg);
+		
+	}
+
+	class dealButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
+            systemLog.dealCards();
         }
     }
 
