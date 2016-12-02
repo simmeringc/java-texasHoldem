@@ -75,16 +75,20 @@ public class MainWindow {
 
         //Instantiate inputPanel interface
 
+        
+        //TODO: Button functions. New Game should be disabled when game has started
+        //		Raise should be disabled when not enough money
+        //		Call should be disabled when blind is above previous bet
         dealButton = new JButton("New Game");
         dealButton.addActionListener(new dealButtonListener());
 
         showCacheButton = new JButton("Fold");
         showCacheButton.addActionListener(new ShowCacheButtonListener());
 
-        clearCacheButton = new JButton("fuck");
+        clearCacheButton = new JButton("Raise");
         clearCacheButton.addActionListener(new ClearCacheButtonListener());
 
-        helpButton = new JButton("Help");
+        helpButton = new JButton("Call");
         helpButton.addActionListener(new HelpButtonListener());
 
         //Append inputPanel interface
@@ -136,19 +140,27 @@ public class MainWindow {
         cardPane4.setFont(font1);
         cardPane5.setFont(font1);
         
-        appendtoPane(cardPane, "10\u2660 ", Color.BLACK);
-        appendtoPane(cardPane, "5\u2665 ", Color.RED);
-
-        appendtoPane(cardPane2, "9\u2663 ", Color.BLACK);
-        appendtoPane(cardPane2, "A\u2666 ", Color.RED);
+        String spade = "\u2660";
+        String heart = "\u2665";
+        String diamond = "\u2666";
+        String club = "\u2663";
         
-        appendtoPane(cardPane3, "4\u2660 ", Color.BLACK);
-        appendtoPane(cardPane3, "2\u2665 ", Color.RED);
+        appendtoPane(cardPane, "10" + spade, Color.BLACK);
+        appendtoPane(cardPane, "5" + heart, Color.RED);
 
-        appendtoPane(cardPane4, "8\u2663 ", Color.BLACK);
-        appendtoPane(cardPane4, "2\u2666 ", Color.RED);
+        appendtoPane(cardPane2, "9" + club, Color.BLACK);
+        appendtoPane(cardPane2, "A" + diamond, Color.RED);
         
-        appendtoPane(cardPane5, "\n\nQ", Color.BLACK);
+        appendtoPane(cardPane3, "4" + spade, Color.BLACK);
+        appendtoPane(cardPane3, "2" + heart, Color.RED);
+
+        appendtoPane(cardPane4, "8" + club, Color.BLACK);
+        appendtoPane(cardPane4, "2" + diamond, Color.RED);
+        
+        appendtoPane(cardPane5, "\n\n10" + club + " ", Color.BLACK);
+        appendtoPane(cardPane5, "A" + heart + " ", Color.RED);
+        appendtoPane(cardPane5, "Q" + spade + " ", Color.BLACK);
+
         
         cardPane.setEditable(false);
         cardPane2.setEditable(false);
