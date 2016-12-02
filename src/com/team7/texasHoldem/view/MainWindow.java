@@ -24,7 +24,7 @@ public class MainWindow {
 
 	JFrame frame2;
     JFrame frame;
-    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, rightCardPanel, cardPanel;
+    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, rightCardPanel, cardPanel, controlPanel;
 //    JFXPanel jfxWebviewPanel;
     JButton dealButton, showCacheButton, clearCacheButton, helpButton;
     JScrollPane scroll;
@@ -55,6 +55,7 @@ public class MainWindow {
         
         cardPanel = new JPanel();
         
+        controlPanel = new JPanel();
         topCardPanel = new JPanel();
         bottomCardPanel = new JPanel();
         centerCardPanel = new JPanel();
@@ -116,6 +117,10 @@ public class MainWindow {
         topCardPanel.add(cardPane, BorderLayout.EAST);
         topCardPanel.add(cardPane2, BorderLayout.WEST);
         
+        controlPanel.setLayout(new BorderLayout());
+        controlPanel.add(logPanel, BorderLayout.NORTH);
+        controlPanel.add(inputPanel, BorderLayout.SOUTH);
+        
         cardPanel.add(bottomCardPanel, BorderLayout.SOUTH);
         bottomCardPanel.setLayout(new BorderLayout());
         bottomCardPanel.add(cardPane3, BorderLayout.EAST);
@@ -171,12 +176,16 @@ public class MainWindow {
         //Append logPanel interface
         logPanel.add(scroll);
         
-
+        
         //Add panels to frame
         //frame.getContentPane().add(BorderLayout.CENTER, bottomCardPanel);
-        frame.getContentPane().add(BorderLayout.SOUTH, inputPanel);
+        frame.setLayout(new BorderLayout());
+        
+        //frame.getContentPane().add(BorderLayout.SOUTH, inputPanel);
         frame.getContentPane().add(BorderLayout.CENTER, cardPanel);
-        //frame.getContentPane().add(BorderLayout.CENTER, logPanel);
+        frame.getContentPane().add(BorderLayout.SOUTH, controlPanel);
+
+        //frame.getContentPane().add(BorderLayout.SOUTH, logPanel);
         //frame.getContentPane().add(BorderLayout.NORTH, topCardPanel);
        // frame.getContentPane().add(BorderLayout.NORTH, jfxWebviewPanel);
 
