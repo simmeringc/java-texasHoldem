@@ -10,6 +10,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -21,12 +22,13 @@ import javafx.scene.web.WebView;
 public class MainWindow {
 
 
+	JFrame frame2;
     JFrame frame;
-    JPanel inputPanel, logPanel, cardPanel;
+    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, rightCardPanel, cardPanel;
 //    JFXPanel jfxWebviewPanel;
     JButton dealButton, showCacheButton, clearCacheButton, helpButton;
     JScrollPane scroll;
-    JTextPane cardPane;
+    JTextPane cardPane, cardPane2, cardPane3, cardPane4, cardPane5;
     
 
     SystemLog systemLog = new SystemLog();
@@ -44,13 +46,18 @@ public class MainWindow {
     public void buildGUI() {
 
         //Create frame
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    	frame = new JFrame();
+    	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //Create panels
         inputPanel = new JPanel();
         logPanel = new JPanel();
+        
         cardPanel = new JPanel();
+        
+        topCardPanel = new JPanel();
+        bottomCardPanel = new JPanel();
+        centerCardPanel = new JPanel();
 
 //        //Using Event Dispatch Thread for modifying a Swing components
 //        jfxWebviewPanel = new JFXPanel();
@@ -94,34 +101,81 @@ public class MainWindow {
 
         Font font1 = new Font("SansSerif", Font.BOLD, 70);
         cardPane = new JTextPane();
-        cardPanel.add(cardPane);
-
+        cardPane2 = new JTextPane();
+        cardPane3 = new JTextPane();
+        cardPane4 = new JTextPane();
+        cardPane5 = new JTextPane();
         
+        cardPanel.setLayout(new BorderLayout());
+        cardPanel.add(topCardPanel, BorderLayout.NORTH);
+        topCardPanel.setLayout(new BorderLayout());
+        topCardPanel.add(cardPane, BorderLayout.EAST);
+        topCardPanel.add(cardPane2, BorderLayout.WEST);
+        
+        cardPanel.add(bottomCardPanel, BorderLayout.SOUTH);
+        bottomCardPanel.setLayout(new BorderLayout());
+        bottomCardPanel.add(cardPane3, BorderLayout.EAST);
+        bottomCardPanel.add(cardPane4, BorderLayout.WEST);
+        
+        cardPanel.add(centerCardPanel, BorderLayout.CENTER);
+        centerCardPanel.setLayout(new BorderLayout());
+        centerCardPanel.add(cardPane5, BorderLayout.CENTER);
+
+
+        StyledDocument doc = cardPane5.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        
+        //bottomCardPanel.add(cardPane2);
+        //rightCardPanel.add(cardPane3);
+
         cardPane.setFont(font1);
+        cardPane2.setFont(font1);
+        cardPane3.setFont(font1);
+        cardPane4.setFont(font1);
+        cardPane5.setFont(font1);
         
         appendtoPane(cardPane, "10\u2660 ", Color.BLACK);
         appendtoPane(cardPane, "5\u2665 ", Color.RED);
-        appendtoPane(cardPane, "9\u2663 ", Color.BLACK);
-        appendtoPane(cardPane, "A\u2666 ", Color.RED);
 
+        appendtoPane(cardPane2, "9\u2663 ", Color.BLACK);
+        appendtoPane(cardPane2, "A\u2666 ", Color.RED);
+        
+        appendtoPane(cardPane3, "4\u2660 ", Color.BLACK);
+        appendtoPane(cardPane3, "2\u2665 ", Color.RED);
+
+        appendtoPane(cardPane4, "8\u2663 ", Color.BLACK);
+        appendtoPane(cardPane4, "2\u2666 ", Color.RED);
+        
+        appendtoPane(cardPane5, "\n\nQ", Color.BLACK);
+        
         cardPane.setEditable(false);
+        cardPane2.setEditable(false);
+        cardPane3.setEditable(false);
+        cardPane4.setEditable(false);
+        cardPane5.setEditable(false);
         
         //Append logPanel interface
         logPanel.add(scroll);
         
 
         //Add panels to frame
+        //frame.getContentPane().add(BorderLayout.CENTER, bottomCardPanel);
         frame.getContentPane().add(BorderLayout.SOUTH, inputPanel);
-        frame.getContentPane().add(BorderLayout.CENTER, logPanel);
-        frame.getContentPane().add(BorderLayout.NORTH, cardPanel);
+        frame.getContentPane().add(BorderLayout.CENTER, cardPanel);
+        //frame.getContentPane().add(BorderLayout.CENTER, logPanel);
+        //frame.getContentPane().add(BorderLayout.NORTH, topCardPanel);
        // frame.getContentPane().add(BorderLayout.NORTH, jfxWebviewPanel);
 
 
         //Frame parameters
         frame.setSize(809, 601);
         frame.setTitle("Local Web Cacher - TTD Exercise");
+    	
         frame.setResizable(false);
         frame.setVisible(true);
+        
     }
 
     private void appendtoPane(JTextPane tp, String msg, Color c) {
