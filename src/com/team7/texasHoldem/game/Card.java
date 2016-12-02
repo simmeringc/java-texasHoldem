@@ -28,4 +28,8 @@ public class Card {
     public String toString() {
         return "Suit: " + suit.toString() + ", Rank :" + rank.toString();
     }
+
+    public Integer getRankToInt() {
+        return rank.ordinal();
+    }
 }
