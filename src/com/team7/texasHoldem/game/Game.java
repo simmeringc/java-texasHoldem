@@ -35,4 +35,25 @@ public class Game {
             player.getCards()[1] = deck.pop();
         }
     }
+
+    public void callFlop() {
+        deck.pop(); //Burn Card
+        tableCards.add(deck.pop());
+        tableCards.add(deck.pop());
+        tableCards.add(deck.pop());
+    }
+
+    public void betTurn() {
+        deck.pop();
+        tableCards.add(deck.pop());
+    }
+
+    public void betRiver() {
+        deck.pop();
+        tableCards.add(deck.pop());
+    }
+
+    public List<Player> getWinner() {
+        RankingUtil.
+    }
 }
