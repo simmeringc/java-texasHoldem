@@ -24,11 +24,11 @@ public class MainWindow {
 
 	JFrame frame2;
     JFrame frame;
-    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, rightCardPanel, cardPanel, controlPanel;
+    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, cardPanel, controlPanel;
 //    JFXPanel jfxWebviewPanel;
     JButton dealButton, showCacheButton, clearCacheButton, helpButton;
     JScrollPane scroll;
-    JTextPane cardPane, cardPane2, cardPane3, cardPane4, cardPane5;
+    JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane;
     
 
     SystemLog systemLog = new SystemLog();
@@ -103,19 +103,19 @@ public class MainWindow {
         //Instantiate logPanel interface
         scroll = new JScrollPane(systemLog.getSystemLogTextArea());
 
-
+        //Playing Field
         Font font1 = new Font("SansSerif", Font.BOLD, 70);
-        cardPane = new JTextPane();
-        cardPane2 = new JTextPane();
-        cardPane3 = new JTextPane();
-        cardPane4 = new JTextPane();
-        cardPane5 = new JTextPane();
+        NWcardPane = new JTextPane();
+        NEcardPane = new JTextPane();
+        SEcardPane = new JTextPane();
+        SWcardPane = new JTextPane();
+        CcardPane = new JTextPane();
         
         cardPanel.setLayout(new BorderLayout());
         cardPanel.add(topCardPanel, BorderLayout.NORTH);
         topCardPanel.setLayout(new BorderLayout());
-        topCardPanel.add(cardPane, BorderLayout.EAST);
-        topCardPanel.add(cardPane2, BorderLayout.WEST);
+        topCardPanel.add(NWcardPane, BorderLayout.EAST);
+        topCardPanel.add(NEcardPane, BorderLayout.WEST);
         
         controlPanel.setLayout(new BorderLayout());
         controlPanel.add(logPanel, BorderLayout.NORTH);
@@ -123,72 +123,63 @@ public class MainWindow {
         
         cardPanel.add(bottomCardPanel, BorderLayout.SOUTH);
         bottomCardPanel.setLayout(new BorderLayout());
-        bottomCardPanel.add(cardPane3, BorderLayout.EAST);
-        bottomCardPanel.add(cardPane4, BorderLayout.WEST);
+        bottomCardPanel.add(SEcardPane, BorderLayout.EAST);
+        bottomCardPanel.add(SWcardPane, BorderLayout.WEST);
         
         cardPanel.add(centerCardPanel, BorderLayout.CENTER);
         centerCardPanel.setLayout(new BorderLayout());
-        centerCardPanel.add(cardPane5, BorderLayout.CENTER);
+        centerCardPanel.add(CcardPane, BorderLayout.CENTER);
 
 
-        StyledDocument doc = cardPane5.getStyledDocument();
+        StyledDocument doc = CcardPane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
-        
-        //bottomCardPanel.add(cardPane2);
-        //rightCardPanel.add(cardPane3);
 
-        cardPane.setFont(font1);
-        cardPane2.setFont(font1);
-        cardPane3.setFont(font1);
-        cardPane4.setFont(font1);
-        cardPane5.setFont(font1);
+        //Large Font
+        NWcardPane.setFont(font1);
+        NEcardPane.setFont(font1);
+        SEcardPane.setFont(font1);
+        SWcardPane.setFont(font1);
+        CcardPane.setFont(font1);
+        
+        //Unicode suit definitions
         
         String spade = "\u2660";
         String heart = "\u2665";
         String diamond = "\u2666";
         String club = "\u2663";
         
-        appendtoPane(cardPane, "10" + spade, Color.BLACK);
-        appendtoPane(cardPane, "5" + heart, Color.RED);
+        appendtoPane(NWcardPane, "10" + spade, Color.BLACK);
+        appendtoPane(NWcardPane, "5" + heart, Color.RED);
 
-        appendtoPane(cardPane2, "9" + club, Color.BLACK);
-        appendtoPane(cardPane2, "A" + diamond, Color.RED);
+        appendtoPane(NEcardPane, "9" + club, Color.BLACK);
+        appendtoPane(NEcardPane, "A" + diamond, Color.RED);
         
-        appendtoPane(cardPane3, "4" + spade, Color.BLACK);
-        appendtoPane(cardPane3, "2" + heart, Color.RED);
+        appendtoPane(SEcardPane, "4" + spade, Color.BLACK);
+        appendtoPane(SEcardPane, "2" + heart, Color.RED);
 
-        appendtoPane(cardPane4, "8" + club, Color.BLACK);
-        appendtoPane(cardPane4, "2" + diamond, Color.RED);
+        appendtoPane(SWcardPane, "8" + club, Color.BLACK);
+        appendtoPane(SWcardPane, "2" + diamond, Color.RED);
         
-        appendtoPane(cardPane5, "\n\n10" + club + " ", Color.BLACK);
-        appendtoPane(cardPane5, "A" + heart + " ", Color.RED);
-        appendtoPane(cardPane5, "Q" + spade + " ", Color.BLACK);
+        appendtoPane(CcardPane, "\n10" + club + " ", Color.BLACK);
+        appendtoPane(CcardPane, "A" + heart + " ", Color.RED);
+        appendtoPane(CcardPane, "Q" + spade + " ", Color.BLACK);
 
         
-        cardPane.setEditable(false);
-        cardPane2.setEditable(false);
-        cardPane3.setEditable(false);
-        cardPane4.setEditable(false);
-        cardPane5.setEditable(false);
+        NWcardPane.setEditable(false);
+        NEcardPane.setEditable(false);
+        SEcardPane.setEditable(false);
+        SWcardPane.setEditable(false);
+        CcardPane.setEditable(false);
         
         //Append logPanel interface
         logPanel.add(scroll);
         
-        
         //Add panels to frame
-        //frame.getContentPane().add(BorderLayout.CENTER, bottomCardPanel);
         frame.setLayout(new BorderLayout());
-        
-        //frame.getContentPane().add(BorderLayout.SOUTH, inputPanel);
         frame.getContentPane().add(BorderLayout.CENTER, cardPanel);
         frame.getContentPane().add(BorderLayout.SOUTH, controlPanel);
-
-        //frame.getContentPane().add(BorderLayout.SOUTH, logPanel);
-        //frame.getContentPane().add(BorderLayout.NORTH, topCardPanel);
-       // frame.getContentPane().add(BorderLayout.NORTH, jfxWebviewPanel);
-
 
         //Frame parameters
         frame.setSize(809, 601);
