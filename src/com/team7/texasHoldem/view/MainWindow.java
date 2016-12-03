@@ -1,6 +1,7 @@
 package com.team7.texasHoldem.view;
 //import com.sun.tools.corba.se.idl.Arguments;
 import com.team7.texasHoldem.game.Card;
+import com.team7.texasHoldem.game.CardRanker;
 import com.team7.texasHoldem.game.Deck;
 import com.team7.texasHoldem.game.Game;
 import com.team7.texasHoldem.game.Player;
@@ -25,6 +26,7 @@ public class MainWindow {
 
 
     SystemLog systemLog = new SystemLog();
+    CardRanker ranker = new CardRanker();
 
     Player player1 = new Player();
     Player player2 = new Player();
@@ -232,6 +234,7 @@ public class MainWindow {
             java.awt.Color card2Color = cards[1].getColor();
             drawCardsSW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
             setEditableCards(false);
+            
         }
     }
 
