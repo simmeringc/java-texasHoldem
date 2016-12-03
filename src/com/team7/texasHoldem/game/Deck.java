@@ -13,7 +13,7 @@ public class Deck {
     private static ArrayList<Card> cards;
     private static Random random;
     //spade, heart, diamond, club
-    private static String[] CardSuitArray = {"\u2260","\u2265","\u2666","\u2663"};
+    private static String[] CardSuitArray = {"\u2660","\u2665","\u2666","\u2663"};
     private static String[] CardRankArray = {"2","3","4","5","6","7","8","9","10","J","Q","K","A"};
 
     public Deck(SystemLog systemLog) {

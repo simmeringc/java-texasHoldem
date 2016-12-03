@@ -1,5 +1,4 @@
 package com.team7.texasHoldem.game;
-
 import com.team7.texasHoldem.view.SystemLog;
 
 import java.util.ArrayList;
