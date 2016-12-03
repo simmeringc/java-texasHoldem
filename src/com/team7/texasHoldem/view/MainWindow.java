@@ -1,11 +1,6 @@
-/**
- * Created by Conner on 11/27/16.
- */
-
 package com.team7.texasHoldem.view;
 
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -14,10 +9,6 @@ import javax.swing.text.StyledDocument;
 
 import java.awt.*;
 import java.awt.event.*;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebView;
 
 public class MainWindow {
 
@@ -38,7 +29,7 @@ public class MainWindow {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
         //Set the name of the application menu item
-        System.setProperty("apple.awt.application.name", "Local Web Cacher");
+        System.setProperty("apple.awt.application.name", "Texas Hold'em");
 
         new MainWindow().buildGUI();
     }
@@ -59,23 +50,6 @@ public class MainWindow {
         topCardPanel = new JPanel();
         bottomCardPanel = new JPanel();
         centerCardPanel = new JPanel();
-
-//        //Using Event Dispatch Thread for modifying a Swing components
-//        jfxWebviewPanel = new JFXPanel();
-//        //Default scene
-//        Platform.runLater(() -> { //Interactions with JFXPanel should take place on the JavaFX Application Thread
-//            WebView webView = new WebView();
-//            webView.setMaxSize(600.0, 400.0);
-//            jfxWebviewPanel.setScene(new Scene(webView));
-//            try {
-//                webView.getEngine().load("");
-//            } catch (Exception e) {
-//                e.printStackTrace(System.out);
-//            }
-//        });
-
-        //Instantiate inputPanel interface
-
         
         //TODO: Button functions. New Game should be disabled when game has started
         //		Raise should be disabled when not enough money

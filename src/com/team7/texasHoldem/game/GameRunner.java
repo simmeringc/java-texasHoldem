@@ -1,7 +1,3 @@
-/**
- * Created by Conner on 11/28/16.
- */
-
 package com.team7.texasHoldem.game;
 
 public class GameRunner {

@@ -1,7 +1,3 @@
-/**
- * Created by Conner on 11/30/16.
- */
-
 package com.team7.texasHoldem.game;
 import com.team7.texasHoldem.enums.HandRankEnum;
 

@@ -1,7 +1,3 @@
-/**
- * Created by Conner on 11/27/16.
- */
-
 package com.team7.texasHoldem.view;
 
 import javax.swing.*;

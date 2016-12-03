@@ -1,7 +1,3 @@
-/**
- * Created by Conner on 11/30/16.
- */
-
 package com.team7.texasHoldem.game;
 
 import java.util.ArrayList;
@@ -53,7 +49,7 @@ public class Game {
         tableCards.add(deck.pop());
     }
 
-    public List<Player> getWinner() {
-        //RankingUtil.
-    }
+//    public List<Player> getWinner() {
+//      RankingUtil.
+//    }
 }

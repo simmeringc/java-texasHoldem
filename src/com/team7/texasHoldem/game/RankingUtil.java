@@ -1,9 +1,5 @@
 package com.team7.texasHoldem.game;
 
-/**
- * Created by Matt on 12/2/16.
- */
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +20,9 @@ public class RankingUtil {
         return highCard;
     }
 
-    private void checkPlayersRanking() {
-        for (Player player : players) {
-            RankingUtil.checkRanking(player, tableCards);
-        }
-    }
+//    private void checkPlayersRanking() {
+//        for (Player player : players) {
+//            RankingUtil.checkRanking(player, tableCards);
+//        }
+//    }
 }
