@@ -2,7 +2,7 @@ package com.team7.texasHoldem.game;
 
 public class GameRunner {
     public static void main(String[] args) {
-        Deck deck = new Deck();
+        Deck deck = Deck.getDeck();
         Player player1 = new Player();
         Game game = new Game();
         game.newGame(deck, player1);

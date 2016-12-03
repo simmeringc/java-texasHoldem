@@ -27,26 +27,26 @@ public class Game {
 
     public void deal() {
         for (Player player : players) {
-            player.getCards()[0] = deck.pop();
-            player.getCards()[1] = deck.pop();
+            player.getCards()[0] = deck.getCard();
+            player.getCards()[1] = deck.getCard();
         }
     }
 
     public void callFlop() {
-        deck.pop(); //Burn Card
-        tableCards.add(deck.pop());
-        tableCards.add(deck.pop());
-        tableCards.add(deck.pop());
+        deck.getCard(); //Burn Card
+        tableCards.add(deck.getCard());
+        tableCards.add(deck.getCard());
+        tableCards.add(deck.getCard());
     }
 
     public void betTurn() {
-        deck.pop();
-        tableCards.add(deck.pop());
+        deck.getCard();
+        tableCards.add(deck.getCard());
     }
 
     public void betRiver() {
-        deck.pop();
-        tableCards.add(deck.pop());
+        deck.getCard();
+        tableCards.add(deck.getCard());
     }
 
 //    public List<Player> getWinner() {
