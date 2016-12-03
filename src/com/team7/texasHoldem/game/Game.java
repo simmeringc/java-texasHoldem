@@ -1,19 +1,20 @@
 package com.team7.texasHoldem.game;
 
+import com.team7.texasHoldem.view.SystemLog;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Game {
 
+    private SystemLog systemLog;
     private Deck deck;
-
     private List<Player> players;
-
     private List<Card> tableCards;
 
-    public Game(Player player1, Player player2, Player player3, Player player4) {
-        this.deck = new Deck();
+    public Game(SystemLog systemLog, Player player1, Player player2, Player player3, Player player4) {
+        this.systemLog = systemLog;
+        this.deck = new Deck(systemLog);
         tableCards = new ArrayList<Card>();
         players = new ArrayList<Player>();
         players.add(player1);

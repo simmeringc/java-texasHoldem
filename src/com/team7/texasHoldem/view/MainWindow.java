@@ -1,5 +1,4 @@
 package com.team7.texasHoldem.view;
-import com.sun.tools.corba.se.idl.Arguments;
 import com.team7.texasHoldem.game.Card;
 import com.team7.texasHoldem.game.Deck;
 import com.team7.texasHoldem.game.Game;
@@ -30,7 +29,7 @@ public class MainWindow {
     Player player2 = new Player();
     Player player3 = new Player();
     Player player4 = new Player();
-    Game game = new Game(player1, player2, player3, player4);
+    Game game = new Game(systemLog, player1, player2, player3, player4);
     Deck deck = game.getDeck();
 
     public static void main(String[] args) {
@@ -145,7 +144,7 @@ public class MainWindow {
 
     }
 
-    private void appendtoPane(JTextPane tp, String msg, Color c) {
+    private void appendtoPane(JTextPane tp, String msg, java.awt.Color c) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
@@ -185,33 +184,30 @@ public class MainWindow {
     }
 
     private void drawCardsNW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+        NWcardPane.setText("");
         appendtoPane(NWcardPane, rank1 + suit1, color1);
         appendtoPane(NWcardPane, rank2 + suit2, color2);
     }
 
     private void drawCardsNE(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+        NEcardPane.setText("");
         appendtoPane(NEcardPane, rank1 + suit1, color1);
         appendtoPane(NEcardPane, rank2 + suit2, color2);
     }
 
     private void drawCardsSE(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+        SEcardPane.setText("");
         appendtoPane(SEcardPane, rank1 + suit1, color1);
         appendtoPane(SEcardPane, rank2 + suit2, color2);
     }
 
     private void drawCardsSW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
-        System.out.println(rank1+suit1+color1+rank2+suit2+color2);
+        SWcardPane.setText("");
         appendtoPane(SWcardPane, rank1 + suit1, color1);
         appendtoPane(SWcardPane, rank2 + suit2, color2);
     }
-    private void drawCardsCC1(String rank1, String suit1, java.awt.Color color1) {
-        appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
-    }
-    private void drawCardsCC2(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
-        appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
-        appendtoPane(CcardPane, rank2 + suit2, color2);
-    }
-    private void drawCardsCC3(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2, String rank3, String suit3, java.awt.Color color3) {
+    private void drawCardsCC(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2, String rank3, String suit3, java.awt.Color color3) {
+        CcardPane.setText("");
         appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
         appendtoPane(CcardPane, rank2 + suit2, color2);
         appendtoPane(CcardPane, rank3 + suit3, color3);
@@ -225,12 +221,16 @@ public class MainWindow {
             Card[] cards = player1.getCards();
             String card1Rank = cards[0].getRank();
             String card1Suit = cards[0].getSuit();
-            player1.printCards();
             java.awt.Color card1Color = cards[0].getColor();
             String card2Rank = cards[1].getRank();
             String card2Suit = cards[1].getSuit();
             java.awt.Color card2Color = cards[1].getColor();
+            System.out.println(card1Rank + card1Suit + card1Color + card2Rank + card2Suit + card2Color);
             drawCardsSW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            drawCardsNW("?","",Color.BLACK,"?","",Color.RED);
+            drawCardsNE("?","",Color.BLACK,"?","",Color.RED);
+            drawCardsSE("?","",Color.BLACK,"?","",Color.RED);
+            drawCardsCC("?","",Color.BLACK,"?","",Color.RED,"?","",Color.BLACK);
             setEditableCards(false);
         }
     }
