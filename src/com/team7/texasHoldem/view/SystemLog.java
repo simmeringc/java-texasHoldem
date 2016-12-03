@@ -34,5 +34,8 @@ public class SystemLog {
     public void buttonPressed() {
         systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " button pressed");
     }
+    public void newDeck() {
+        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " finished deck, creating new deck");
+    }
 }
 
