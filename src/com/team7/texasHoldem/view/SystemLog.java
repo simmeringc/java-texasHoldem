@@ -1,11 +1,8 @@
 package com.team7.texasHoldem.view;
 
 import javax.swing.*;
-import java.awt.Font;
-
 import javax.swing.text.DefaultCaret;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class SystemLog {
 
@@ -30,7 +27,7 @@ public class SystemLog {
     }
     
     public void dealCards(){
-    	systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + "Cards have been Dealt");
+    	systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " cards have been dealt");
 
     	
     }

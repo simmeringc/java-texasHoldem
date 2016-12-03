@@ -1,31 +1,49 @@
 package com.team7.texasHoldem.game;
 import com.team7.texasHoldem.enums.CardRankEnum;
 import com.team7.texasHoldem.enums.CardSuitEnum;
+import java.awt.*;
 
 public class Card {
 
-    private CardSuitEnum suit;
-    private CardRankEnum rank;
+    private String suit;
+    private String rank;
+    private java.awt.Color color;
 
-    public Card(CardSuitEnum suit, CardRankEnum rank) {
+    public Card(String suit, String rank) {
         this.suit = suit;
         this.rank = rank;
+        if (suit == "\u2265") {
+            this.color = Color.RED;
+        }
+        if (suit == "\u2266") {
+            this.color = Color.RED;
+        }
+        if (suit == "\u2260") {
+            this.color = Color.BLACK;
+        }
+        if (suit == "\u2263") {
+            this.color = Color.BLACK;
+        }
     }
 
-    public CardSuitEnum getSuit() {
+    public String getSuit() {
         return suit;
     }
 
-    public CardRankEnum getRank() {
+    public String getRank() {
         return rank;
+    }
+
+    public java.awt.Color getColor() {
+        return color;
     }
 
     @Override
     public String toString() {
-        return "Suit: " + suit.toString() + ", Rank :" + rank.toString();
+        return "Suit: " + suit + ", Rank :" + rank;
     }
 
-    public Integer getRankToInt() {
-        return rank.ordinal();
-    }
+//    public Integer getRankToInt() {
+//        return rank.ordinal();
+//    }
 }

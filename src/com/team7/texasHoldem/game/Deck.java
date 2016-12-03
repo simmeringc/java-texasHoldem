@@ -9,6 +9,9 @@ public class Deck {
 
     private ArrayList<Card> cards;
     private Random random;
+    //spade, heart, diamond, club
+    String[] CardSuitArray = {"\u2260","\u2265","\u2666","\u2663"};
+    String[] CardRankArray = {"2","3","4","5","6","7","8","9","10","J","Q","K","A"};
 
     public Deck() {
         this.random = new Random();
@@ -17,8 +20,8 @@ public class Deck {
 
     private void createDeck() {
         cards = new ArrayList<>();
-        for (CardSuitEnum suit : CardSuitEnum.values()) {
-            for (CardRankEnum rank : CardRankEnum.values()) {
+        for (String suit : CardSuitArray) {
+            for (String rank : CardRankArray) {
                 cards.add(new Card(suit, rank));
             }
         }
@@ -26,15 +29,6 @@ public class Deck {
 
     public Card pop() {
         return cards.remove(random.nextInt(cards.size()));
-    }
-
-    public void printDeck() {
-        int i = 0;
-        for (Card card : cards) {
-            i++;
-            System.out.println(i);
-            System.out.println(card.toString());
-        }
     }
 }
 

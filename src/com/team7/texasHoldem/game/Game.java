@@ -12,17 +12,18 @@ public class Game {
 
     private List<Card> tableCards;
 
-    public void newGame(Deck deck, Player player1, Player... _players) {
-        this.deck = deck;
+    public Game(Player player1, Player player2, Player player3, Player player4) {
+        this.deck = new Deck();
         tableCards = new ArrayList<Card>();
         players = new ArrayList<Player>();
-        //the game needs at least one player
         players.add(player1);
-        players.addAll(Arrays.asList(_players));
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
     }
 
-    public void removePlayer(Player player) {
-        players.remove(player);
+    public Deck getDeck() {
+        return deck;
     }
 
     public void deal() {
