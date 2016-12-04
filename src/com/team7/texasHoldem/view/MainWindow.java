@@ -11,6 +11,12 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
+
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -21,7 +27,6 @@ public class MainWindow {
     JButton dealButton, showCacheButton, clearCacheButton, helpButton;
     JScrollPane scroll;
     JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane;
-
 
     SystemLog systemLog = new SystemLog();
 
@@ -41,7 +46,19 @@ public class MainWindow {
 
         MainWindow mainWindow = new MainWindow();
         mainWindow.buildGUI();
+        mainWindow.initializeSound();
         mainWindow.drawGameInit();
+    }
+
+    public void initializeSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./../music.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void buildGUI() {
