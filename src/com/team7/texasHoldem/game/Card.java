@@ -12,16 +12,16 @@ public class Card {
     public Card(String suit, String rank) {
         this.suit = suit;
         this.rank = rank;
-        if (suit == "\u2265") {
+        if (suit == "\u2665") {
             this.color = Color.RED;
         }
-        if (suit == "\u2266") {
+        if (suit == "\u2666") {
             this.color = Color.RED;
         }
-        if (suit == "\u2260") {
+        if (suit == "\u2660") {
             this.color = Color.BLACK;
         }
-        if (suit == "\u2263") {
+        if (suit == "\u2663") {
             this.color = Color.BLACK;
         }
     }
