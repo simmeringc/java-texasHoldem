@@ -1,5 +1,6 @@
 package com.team7.texasHoldem.view;
 import com.team7.texasHoldem.game.Card;
+import com.team7.texasHoldem.game.Ranker;
 import com.team7.texasHoldem.game.Deck;
 import com.team7.texasHoldem.game.Game;
 import com.team7.texasHoldem.game.Player;
@@ -28,6 +29,7 @@ public class MainWindow {
     JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane, NWChipPane, NEChipPane, SWChipPane , SEChipPane, CPot;
 
     SystemLog systemLog = new SystemLog();
+    //Ranker ranker = new Ranker();
 
     Player player1 = new Player();
     Player player2 = new Player();
@@ -275,6 +277,7 @@ public class MainWindow {
 
     private void drawCardsSW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
         SWcardPane.setText("");
+
         appendtoPane(SWcardPane, rank1 + suit1, color1);
         appendtoPane(SWcardPane, rank2 + suit2, color2);
     }
@@ -307,6 +310,7 @@ public class MainWindow {
             raiseButton.setEnabled(false);
             callButton.setEnabled(false);
             setEditableCards(false);
+            
         }
     }
 

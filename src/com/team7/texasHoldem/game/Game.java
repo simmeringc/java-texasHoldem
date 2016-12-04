@@ -8,6 +8,8 @@ public class Game {
 
     private SystemLog systemLog;
     private Deck deck;
+    private Ranker ranker;
+
     private List<Player> players;
     private List<Player> activePlayers;
     private List<Card> tableCards;
@@ -18,13 +20,23 @@ public class Game {
         this.deck = new Deck(systemLog);
         tableCards = new ArrayList<Card>();
         players = new ArrayList<Player>();
+        ranker = new Ranker();
         activePlayers = new ArrayList<Player>();
+
         players.add(player1);
         players.add(player2);
         players.add(player3);
         players.add(player4);
     }
 
+    public List<Player> getPlayers(){
+    	return players;
+    }
+    
+    public Player getWinner(){
+    	return ranker.getTopPlayer(getPlayers());
+    }
+    
     public String resetPot() {
         pot = 0;
         return "0";
@@ -59,6 +71,7 @@ public class Game {
                 activePlayers.add(player);
             }
         }
+        ranker.setHighCards(getPlayers());
     }
 
     public void callFlop() {
@@ -78,7 +91,4 @@ public class Game {
         tableCards.add(deck.getCard());
     }
 
-//    public List<Player> getWinner() {
-//      RankingUtil.
-//    }
 }

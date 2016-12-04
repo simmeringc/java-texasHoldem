@@ -26,6 +26,23 @@ public class Card {
         }
     }
 
+    public int getRankToInt(){
+    	if(rank == "J") return 11;
+    	else if(rank == "Q") return 12;
+    	else if(rank == "K") return 13;
+    	else if(rank == "A") return 14;
+    	else return Integer.parseInt(rank);
+    }
+
+    public int getSuitToInt(){
+    	if(suit == "\u2260") return 4;
+    	else if(suit == "\u2265") return 3;
+    	else if(suit == "\u2666") return 2;
+    	else if(suit == "\u2663") return 1;
+    	else return 0;
+    	
+    }
+    //spade, heart, diamond, club
     public String getSuit() {
         return suit;
     }
@@ -40,7 +57,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Suit: " + suit + ", Rank :" + rank;
+        return "Suit: " + suit + ", Rank: " + rank;
     }
 
 //    public Integer getRankToInt() {
