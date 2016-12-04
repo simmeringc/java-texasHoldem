@@ -239,13 +239,6 @@ public class MainWindow {
         appendtoPane(CcardPane, "0", Color.BLACK);
     }
 
-    public void spinLock(int i) {
-        while (i > 0) {
-            i--;
-        }
-        drawChips();
-    }
-
     public void initChips() {
         NWChipPane.setText(player4.resetChips());
         NEChipPane.setText(player3.resetChips());
@@ -304,7 +297,6 @@ public class MainWindow {
             String card2Rank = cards[1].getRank();
             String card2Suit = cards[1].getSuit();
             java.awt.Color card2Color = cards[1].getColor();
-            System.out.println(card1Rank + card1Suit + card1Color + card2Rank + card2Suit + card2Color);
             drawCardsSW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
             drawCardsNW("?","",Color.BLACK,"?","",Color.RED);
             drawCardsNE("?","",Color.BLACK,"?","",Color.RED);
@@ -336,9 +328,21 @@ public class MainWindow {
 
     class FoldButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
+            systemLog.fold();
             game.removeActivePlayer(player1);
-            
+            anteButton.setEnabled(false);
+            foldButton.setEnabled(false);
+            raiseButton.setEnabled(false);
+            callButton.setEnabled(false);
+            Card[] cards = player1.getCards();
+            String card1Rank = cards[0].getRank();
+            String card1Suit = cards[0].getSuit();
+            java.awt.Color card1Color = Color.GRAY;
+            String card2Rank = cards[1].getRank();
+            String card2Suit = cards[1].getSuit();
+            java.awt.Color card2Color = Color.GRAY;
+            System.out.println(card1Rank + card1Suit + card2Rank + card2Suit);
+            drawCardsSE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
         }
     }
 

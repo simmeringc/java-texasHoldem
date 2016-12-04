@@ -18,6 +18,7 @@ public class Game {
         this.deck = new Deck(systemLog);
         tableCards = new ArrayList<Card>();
         players = new ArrayList<Player>();
+        activePlayers = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
         players.add(player3);
@@ -54,7 +55,9 @@ public class Game {
         for (Player player : players) {
             player.getCards()[0] = deck.getCard();
             player.getCards()[1] = deck.getCard();
-            activePlayers.add(player);
+            if (!activePlayers.contains(player)) {
+                activePlayers.add(player);
+            }
         }
     }
 

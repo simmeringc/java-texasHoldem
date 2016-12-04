@@ -35,5 +35,8 @@ public class SystemLog {
     public void newDeck() {
         systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " finished deck, shuffling new deck");
     }
+    public void fold() {
+        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " You folded! The game is finishing");
+    }
 }
 
