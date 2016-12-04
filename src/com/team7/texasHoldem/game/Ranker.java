@@ -24,10 +24,11 @@ public class Ranker {
 	
 	public Player getTopPlayer(List<Player> players){
 		Player topPlayer = null;
-		Card[] topCards = new Card[players.size()];
+		Card[] topCards = new Card[players.size()+1];
 		for(int i = 0; i < players.size(); i++){
 			topCards[i] = players.get(i).getHighCard();
 		}
+		topCards[players.size()+1] = getHighCard(Game.getTableCards());
 		Card top = getHighCard(topCards);
 		for(int i = 0; i < players.size(); i++){
 			if (players.get(i).getHighCard() == top){

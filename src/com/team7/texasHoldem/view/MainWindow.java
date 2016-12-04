@@ -356,8 +356,6 @@ public class MainWindow {
             player1.removeChips(25);
             game.increasePot(25);
             drawChips();
-            Player raisingOpponent = game.bettingRound();
-            raisingOpponent.removeChips(25);
             game.increasePot(25);
             drawChips();
             anteButton.setEnabled(false);

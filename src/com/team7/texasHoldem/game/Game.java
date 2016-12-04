@@ -12,13 +12,12 @@ public class Game {
 
     private List<Player> players;
     private List<Player> activePlayers;
-    private List<Card> tableCards;
+    private static Card[] tableCards = new Card[3];
     private int pot = 1000;
 
     public Game(SystemLog systemLog, Player player1, Player player2, Player player3, Player player4) {
         this.systemLog = systemLog;
         this.deck = new Deck(systemLog);
-        tableCards = new ArrayList<Card>();
         players = new ArrayList<Player>();
         ranker = new Ranker();
         activePlayers = new ArrayList<Player>();
@@ -33,6 +32,10 @@ public class Game {
         return players;
     }
 
+    public static Card[] getTableCards(){
+    	return tableCards;
+    }
+    
     public Player getWinner(){
         return ranker.getTopPlayer(getPlayers());
     }
@@ -76,19 +79,20 @@ public class Game {
 
     public void callFlop() {
         deck.getCard(); //Burn Card
-        tableCards.add(deck.getCard());
-        tableCards.add(deck.getCard());
-        tableCards.add(deck.getCard());
+        tableCards[0] = deck.getCard();
+
     }
 
     public void betTurn() {
         deck.getCard();
-        tableCards.add(deck.getCard());
+        tableCards[1] = deck.getCard();
+
     }
 
     public void betRiver() {
         deck.getCard();
-        tableCards.add(deck.getCard());
+        tableCards[2] = deck.getCard();
+
     }
 
 }
