@@ -5,7 +5,17 @@ import com.team7.texasHoldem.game.Game;
 import com.team7.texasHoldem.game.Player;
 
 import javax.swing.*;
-import javax.swing.text.*;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,7 +26,6 @@ public class MainWindow {
     JButton dealButton, anteButton, foldButton, raiseButton, callButton;
     JScrollPane scroll;
     JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane, NWChipPane, NEChipPane, SWChipPane , SEChipPane, CPot;
-
 
     SystemLog systemLog = new SystemLog();
 
@@ -36,7 +45,19 @@ public class MainWindow {
 
         MainWindow mainWindow = new MainWindow();
         mainWindow.buildGUI();
+        mainWindow.initializeSound();
         mainWindow.drawGameInit();
+    }
+
+    public void initializeSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./../music.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void buildGUI() {
