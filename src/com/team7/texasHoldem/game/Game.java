@@ -7,7 +7,7 @@ import java.util.List;
 public class Game {
 
     private Deck deck;
-
+    private Ranker ranker;
     private List<Player> players;
 
     private List<Card> tableCards;
@@ -16,21 +16,31 @@ public class Game {
         this.deck = new Deck();
         tableCards = new ArrayList<Card>();
         players = new ArrayList<Player>();
+        ranker = new Ranker();
         players.add(player1);
         players.add(player2);
         players.add(player3);
         players.add(player4);
     }
 
+    public List<Player> getPlayers(){
+    	return players;
+    }
+    
     public Deck getDeck() {
         return deck;
     }
-
+    
+    public Player getWinner(){
+    	return ranker.getTopPlayer(getPlayers());
+    }
+    
     public void deal() {
         for (Player player : players) {
             player.getCards()[0] = deck.pop();
             player.getCards()[1] = deck.pop();
         }
+        ranker.setHighCards(getPlayers());
     }
 
     public void callFlop() {
@@ -50,7 +60,4 @@ public class Game {
         tableCards.add(deck.pop());
     }
 
-//    public List<Player> getWinner() {
-//      RankingUtil.
-//    }
 }
