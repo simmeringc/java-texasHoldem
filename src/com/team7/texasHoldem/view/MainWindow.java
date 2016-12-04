@@ -14,8 +14,6 @@ import javax.swing.text.StyledDocument;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.File;
-
 
 import java.awt.*;
 import java.awt.event.*;
@@ -23,10 +21,10 @@ import java.awt.event.*;
 public class MainWindow {
 
     JFrame frame;
-    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, cardPanel, controlPanel;
-    JButton dealButton, showCacheButton, clearCacheButton, helpButton;
+    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, cardPanel, controlPanel, NWPanel, NEPanel , SWPanel, SEPanel, CPanel;
+    JButton dealButton, anteButton, foldButton, raiseButton, callButton;
     JScrollPane scroll;
-    JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane;
+    JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane, NWChipPane, NEChipPane, SWChipPane , SEChipPane, CPot;
 
     SystemLog systemLog = new SystemLog();
 
@@ -82,67 +80,107 @@ public class MainWindow {
         //		Raise should be disabled when not enough money
         //		Call should be disabled when blind is above previous bet
         dealButton = new JButton("New Game");
-        dealButton.addActionListener(new newGameButtonListener());
+        dealButton.addActionListener(new NewGameButtonListener());
 
-        showCacheButton = new JButton("Fold");
-        showCacheButton.addActionListener(new ShowCacheButtonListener());
+        anteButton = new JButton("Ante");
+        anteButton.addActionListener(new AnteButtonListener());
 
-        clearCacheButton = new JButton("Raise");
-        clearCacheButton.addActionListener(new ClearCacheButtonListener());
+        foldButton = new JButton("Fold");
+        foldButton.addActionListener(new FoldButtonListener());
 
-        helpButton = new JButton("Call");
-        helpButton.addActionListener(new HelpButtonListener());
+        raiseButton = new JButton("Raise");
+        raiseButton.addActionListener(new RaiseButtonListener());
+
+        callButton = new JButton("Call");
+        callButton.addActionListener(new CallButtonListener());
 
         //Append inputPanel interface
         //TODO: 
 
         inputPanel.add(dealButton);
-        inputPanel.add(showCacheButton);
-        inputPanel.add(clearCacheButton);
-        inputPanel.add(helpButton);
+        inputPanel.add(anteButton);
+        inputPanel.add(foldButton);
+        inputPanel.add(raiseButton);
+        inputPanel.add(callButton);
 
         //Instantiate logPanel interface
         scroll = new JScrollPane(systemLog.getSystemLogTextArea());
 
-        //Playing Field
-        Font font1 = new Font("SansSerif", Font.BOLD, 70);
+        NWPanel = new JPanel();
+        NEPanel = new JPanel();
+        SWPanel = new JPanel();
+        SEPanel = new JPanel();
+        CPanel = new JPanel();
+
         NWcardPane = new JTextPane();
         NEcardPane = new JTextPane();
         SEcardPane = new JTextPane();
         SWcardPane = new JTextPane();
         CcardPane = new JTextPane();
 
+        NWChipPane = new JTextPane();
+        NEChipPane = new JTextPane();
+        SWChipPane = new JTextPane();
+        SEChipPane = new JTextPane();
+        CPot = new JTextPane();
+
+        NWPanel.add(NWcardPane);
+        NWPanel.add(NWChipPane);
+
+        NEPanel.add(NEChipPane);
+        NEPanel.add(NEcardPane);
+
+        SWPanel.add(SWcardPane);
+        SWPanel.add(SWChipPane);
+
+        SEPanel.add(SEChipPane);
+        SEPanel.add(SEcardPane);
+
+        CPanel.add(CcardPane);
+        CPanel.add(CPot);
+
         cardPanel.setLayout(new BorderLayout());
         cardPanel.add(topCardPanel, BorderLayout.NORTH);
+        cardPanel.add(centerCardPanel, BorderLayout.CENTER);
+        cardPanel.add(bottomCardPanel, BorderLayout.SOUTH);
+
         topCardPanel.setLayout(new BorderLayout());
-        topCardPanel.add(NWcardPane, BorderLayout.EAST);
-        topCardPanel.add(NEcardPane, BorderLayout.WEST);
+        topCardPanel.add(NWPanel, BorderLayout.WEST);
+        topCardPanel.add(NEPanel, BorderLayout.EAST);
+
+        bottomCardPanel.setLayout(new BorderLayout());
+        bottomCardPanel.add(SWPanel, BorderLayout.WEST);
+        bottomCardPanel.add(SEPanel, BorderLayout.EAST);
+
+        centerCardPanel.setLayout(new BorderLayout());
+        centerCardPanel.add(CPanel, BorderLayout.CENTER);
 
         controlPanel.setLayout(new BorderLayout());
         controlPanel.add(logPanel, BorderLayout.NORTH);
         controlPanel.add(inputPanel, BorderLayout.SOUTH);
-
-        cardPanel.add(bottomCardPanel, BorderLayout.SOUTH);
-        bottomCardPanel.setLayout(new BorderLayout());
-        bottomCardPanel.add(SEcardPane, BorderLayout.EAST);
-        bottomCardPanel.add(SWcardPane, BorderLayout.WEST);
-
-        cardPanel.add(centerCardPanel, BorderLayout.CENTER);
-        centerCardPanel.setLayout(new BorderLayout());
-        centerCardPanel.add(CcardPane, BorderLayout.CENTER);
-
 
         StyledDocument doc = CcardPane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        //Large Font
+        //Playing Field
+        Font font1 = new Font("SansSerif", Font.BOLD, 70);
+        Font font2 = new Font("SansSerif", Font.BOLD, 40);
+
+        //Card Font
         NWcardPane.setFont(font1);
         NEcardPane.setFont(font1);
         SEcardPane.setFont(font1);
         SWcardPane.setFont(font1);
         CcardPane.setFont(font1);
+
+        //Money Font
+        NWChipPane.setFont(font2);
+        NEChipPane.setFont(font2);
+        SWChipPane.setFont(font2);
+        SEChipPane.setFont(font2);
+        CPot.setFont(font2);
 
         //Append logPanel interface
         logPanel.add(scroll);
@@ -154,7 +192,7 @@ public class MainWindow {
 
         //Frame parameters
         frame.setSize(809, 601);
-        frame.setTitle("Local Web Cacher - TTD Exercise");
+        frame.setTitle("Texas Hold'em");
 
         frame.setResizable(false);
         frame.setVisible(true);
@@ -200,6 +238,29 @@ public class MainWindow {
         appendtoPane(CcardPane, "0", Color.BLACK);
     }
 
+    public void spinLock(int i) {
+        while (i > 0) {
+            i--;
+        }
+        drawChips();
+    }
+
+    public void initChips() {
+        NWChipPane.setText(player4.resetChips());
+        NEChipPane.setText(player3.resetChips());
+        SEChipPane.setText(player2.resetChips());
+        SWChipPane.setText(player1.resetChips());
+        CPot.setText(game.resetPot());
+    }
+
+    public void drawChips() {
+        NWChipPane.setText(player4.getChips());
+        NEChipPane.setText(player3.getChips());
+        SEChipPane.setText(player2.getChips());
+        SWChipPane.setText(player1.getChips());
+        CPot.setText(game.getPot());
+    }
+
     private void drawCardsNW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
         NWcardPane.setText("");
         appendtoPane(NWcardPane, rank1 + suit1, color1);
@@ -230,7 +291,7 @@ public class MainWindow {
         appendtoPane(CcardPane, rank3 + suit3, color3);
     }
 
-	class newGameButtonListener implements ActionListener {
+	class NewGameButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             setEditableCards(true);
             systemLog.dealCards();
@@ -248,28 +309,44 @@ public class MainWindow {
             drawCardsNE("?","",Color.BLACK,"?","",Color.RED);
             drawCardsSE("?","",Color.BLACK,"?","",Color.RED);
             drawCardsCC("?","",Color.BLACK,"?","",Color.RED,"?","",Color.BLACK);
+            initChips();
+            foldButton.setEnabled(false);
+            raiseButton.setEnabled(false);
+            callButton.setEnabled(false);
             setEditableCards(false);
         }
     }
 
-    class ShowCacheButtonListener implements ActionListener {
+
+    class AnteButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             systemLog.buttonPressed();
+            for (Player player : game.getActivePlayers()) {
+                player.removeChips(25);
+                game.increasePot(25);
+                drawChips();
+            }
+            anteButton.setEnabled(false);
+            foldButton.setEnabled(true);
+            raiseButton.setEnabled(true);
+            callButton.setEnabled(true);
         }
     }
 
-    class cacheSizeCbListener implements ActionListener {
+    class FoldButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             systemLog.buttonPressed();
+            game.removeActivePlayer(player1);
+            
         }
     }
 
-    class ClearCacheButtonListener implements ActionListener {
+    class RaiseButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             systemLog.buttonPressed();
         }
     }
-    class HelpButtonListener implements ActionListener {
+    class CallButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             systemLog.buttonPressed();
         }
