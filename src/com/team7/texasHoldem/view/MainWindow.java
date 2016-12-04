@@ -33,7 +33,7 @@ public class MainWindow {
     Player player3 = new Player();
     Player player4 = new Player();
     Game game = new Game(player1, player2, player3, player4);
-    Deck deck = game.getDeck();
+    Deck deck = Deck.getDeck();
 
     public static void main(String[] args) {
         //Take the menu bar off the JFrame

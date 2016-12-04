@@ -13,7 +13,7 @@ public class Game {
     private List<Card> tableCards;
 
     public Game(Player player1, Player player2, Player player3, Player player4) {
-        this.deck = new Deck();
+        this.deck = Deck.getDeck();
         tableCards = new ArrayList<Card>();
         players = new ArrayList<Player>();
         ranker = new Ranker();
@@ -37,27 +37,27 @@ public class Game {
     
     public void deal() {
         for (Player player : players) {
-            player.getCards()[0] = deck.pop();
-            player.getCards()[1] = deck.pop();
+            player.getCards()[0] = deck.getCard();
+            player.getCards()[1] = deck.getCard();
         }
         ranker.setHighCards(getPlayers());
     }
 
     public void callFlop() {
-        deck.pop(); //Burn Card
-        tableCards.add(deck.pop());
-        tableCards.add(deck.pop());
-        tableCards.add(deck.pop());
+        deck.getCard(); //Burn Card
+        tableCards.add(deck.getCard());
+        tableCards.add(deck.getCard());
+        tableCards.add(deck.getCard());
     }
 
     public void betTurn() {
-        deck.pop();
-        tableCards.add(deck.pop());
+        deck.getCard();
+        tableCards.add(deck.getCard());
     }
 
     public void betRiver() {
-        deck.pop();
-        tableCards.add(deck.pop());
+        deck.getCard();
+        tableCards.add(deck.getCard());
     }
 
 }

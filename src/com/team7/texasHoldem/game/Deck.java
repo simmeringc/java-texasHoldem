@@ -7,28 +7,36 @@ import java.util.Random;
 
 public class Deck {
 
-    private ArrayList<Card> cards;
-    private Random random;
+    private static Deck deck;
+    private static ArrayList<Card> cards;
+    private static Random random;
     //spade, heart, diamond, club
-    String[] CardSuitArray = {"\u2260","\u2265","\u2666","\u2663"};
-    String[] CardRankArray = {"2","3","4","5","6","7","8","9","10","J","Q","K","A"};
+    private static String[] CardSuitArray = {"\u2260","\u2265","\u2666","\u2663"};
+    private static String[] CardRankArray = {"2","3","4","5","6","7","8","9","10","J","Q","K","A"};
 
-    public Deck() {
-        this.random = new Random();
-        createDeck();
+    private Deck() {
+        random = new Random();
+        shuffleDeck();
     }
 
-    private void createDeck() {
+    public static Deck getDeck() {
+        if (deck == null) {
+            deck = new Deck();
+        }
+        return deck;
+    }
+
+    public static Card getCard() {
+        return cards.remove(random.nextInt(cards.size()));
+    }
+
+    public static void shuffleDeck() {
         cards = new ArrayList<>();
         for (String suit : CardSuitArray) {
             for (String rank : CardRankArray) {
                 cards.add(new Card(suit, rank));
             }
         }
-    }
-
-    public Card pop() {
-        return cards.remove(random.nextInt(cards.size()));
     }
 }
 
