@@ -26,16 +26,14 @@ public class SystemLog {
         return sdf.format(date);
     }
     
-    public void dealCards(){
-    	systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " cards have been dealt");
-
-    	
+    public void dealCards() {
+    	systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " Howdy partner, the cards have been dealt. Ante-up 25 chips to start the round city slicker, no cheatin ya hear!");
     }
     public void buttonPressed() {
         systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " button pressed");
     }
     public void newDeck() {
-        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " finished deck, creating new deck");
+        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " finished deck, shuffling new deck");
     }
 }
 

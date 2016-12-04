@@ -9,7 +9,9 @@ public class Game {
     private SystemLog systemLog;
     private Deck deck;
     private List<Player> players;
+    private List<Player> activePlayers;
     private List<Card> tableCards;
+    private int pot = 1000;
 
     public Game(SystemLog systemLog, Player player1, Player player2, Player player3, Player player4) {
         this.systemLog = systemLog;
@@ -22,14 +24,37 @@ public class Game {
         players.add(player4);
     }
 
+    public String resetPot() {
+        pot = 0;
+        return "0";
+    }
+
+    public void increasePot(int i) {
+        pot = pot + i;
+    }
+
+    public String getPot() {
+        String potToString = Integer.toString(pot);
+        return potToString;
+    }
+
     public Deck getDeck() {
         return deck;
+    }
+
+    public List<Player> getActivePlayers() {
+        return activePlayers;
+    }
+
+    public void removeActivePlayer(Player player) {
+        activePlayers.remove(player);
     }
 
     public void deal() {
         for (Player player : players) {
             player.getCards()[0] = deck.getCard();
             player.getCards()[1] = deck.getCard();
+            activePlayers.add(player);
         }
     }
 
