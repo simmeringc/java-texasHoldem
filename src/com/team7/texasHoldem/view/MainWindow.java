@@ -91,7 +91,7 @@ public class MainWindow {
         foldButton = new JButton("Fold");
         foldButton.addActionListener(new FoldButtonListener());
 
-        raiseButton = new JButton("Raise");
+        raiseButton = new JButton("Raise 25");
         raiseButton.addActionListener(new RaiseButtonListener());
 
         callButton = new JButton("Call");
@@ -324,7 +324,7 @@ public class MainWindow {
                 drawChips();
             }
             anteButton.setEnabled(false);
-            foldButton.setEnabled(true);
+            foldButton.setEnabled(false);
             raiseButton.setEnabled(true);
             callButton.setEnabled(true);
         }
@@ -332,12 +332,8 @@ public class MainWindow {
 
     class FoldButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            systemLog.fold();
+            systemLog.fold("Player 1");
             game.removeActivePlayer(player1);
-            anteButton.setEnabled(false);
-            foldButton.setEnabled(false);
-            raiseButton.setEnabled(false);
-            callButton.setEnabled(false);
             Card[] cards = player1.getCards();
             String card1Rank = cards[0].getRank();
             String card1Suit = cards[0].getSuit();
@@ -347,12 +343,26 @@ public class MainWindow {
             java.awt.Color card2Color = Color.GRAY;
             System.out.println(card1Rank + card1Suit + card2Rank + card2Suit);
             drawCardsSE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            anteButton.setEnabled(false);
+            foldButton.setEnabled(false);
+            raiseButton.setEnabled(false);
+            callButton.setEnabled(false);
         }
     }
 
     class RaiseButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
+            systemLog.raise("Player1");
+            player1.removeChips(25);
+            game.increasePot(25);
+            drawChips();
+            Player raisingOpponent = game.bettingRound();
+            raisingOpponent.removeChips(25);
+            game.increasePot(25);
+            drawChips();
+            anteButton.setEnabled(false);
+            raiseButton.setEnabled(false);
+            callButton.setEnabled(true);
         }
     }
     class CallButtonListener implements ActionListener {

@@ -30,13 +30,13 @@ public class Game {
     }
 
     public List<Player> getPlayers(){
-    	return players;
+        return players;
     }
-    
+
     public Player getWinner(){
-    	return ranker.getTopPlayer(getPlayers());
+        return ranker.getTopPlayer(getPlayers());
     }
-    
+
     public String resetPot() {
         pot = 0;
         return "0";
