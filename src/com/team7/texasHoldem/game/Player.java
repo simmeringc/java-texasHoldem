@@ -7,6 +7,7 @@ public class Player {
 
     private Card[] cards = new Card[2];
     private Card highCard = null;
+    private int chips = 0;
 
     public Card getHighCard() {
         return highCard;
@@ -24,6 +25,17 @@ public class Player {
         for (Card card : cards) {
             System.out.println(card.toString());
         }
+    }
+    public void removeChips(int i) {
+        chips = chips-i;
+    }
+    public String resetChips() {
+        chips = 1000;
+        return "1000";
+    }
+    public String getChips() {
+        String chipsToString = Integer.toString(chips);
+        return chipsToString;
     }
 
     public void setCards(Card[] cards) {
