@@ -34,7 +34,7 @@ public class MainWindow {
         MainWindow mainWindow = new MainWindow();
         mainWindow.buildGUI();
         mainWindow.initializeSound();
-        mainWindow.drawGameInit();
+        mainWindow.drawFlopInit();
 
     }
 
@@ -66,9 +66,6 @@ public class MainWindow {
         bottomCardPanel = new JPanel();
         centerCardPanel = new JPanel();
 
-        //TODO: Button functions. New Game should be disabled when game has started
-        //		Raise should be disabled when not enough money
-        //		Call should be disabled when blind is above previous bet
         dealButton = new JButton("New Game");
         dealButton.addActionListener(new NewGameButtonListener());
 
@@ -219,24 +216,12 @@ public class MainWindow {
         MainWindow.drawCardsNW("?","", Color.BLACK,"?","",Color.RED);
         MainWindow.drawCardsNE("?","",Color.BLACK,"?","",Color.RED);
         MainWindow.drawCardsSE("?","",Color.BLACK,"?","",Color.RED);
-        MainWindow.drawCardsCC("?","",Color.BLACK,"?","",Color.RED,"?","",Color.BLACK);
+        MainWindow.drawFlopCardsCC("?","",Color.BLACK,"?","",Color.RED,"?","",Color.BLACK);
         MainWindow.setEditableCards(false);
     }
 
 
-    public static void drawGameInit() {
-        appendtoPane(NWcardPane, "0", Color.BLACK);
-        appendtoPane(NWcardPane, "0", Color.RED);
-
-        appendtoPane(NEcardPane, "0", Color.BLACK);
-        appendtoPane(NEcardPane, "0", Color.RED);
-
-        appendtoPane(SEcardPane, "0", Color.BLACK);
-        appendtoPane(SEcardPane, "0", Color.RED);
-
-        appendtoPane(SWcardPane, "0", Color.BLACK);
-        appendtoPane(SWcardPane, "0", Color.RED);
-
+    public static void drawFlopInit() {
         appendtoPane(CcardPane, "\n0", Color.BLACK);
         appendtoPane(CcardPane, "0", Color.RED);
         appendtoPane(CcardPane, "0", Color.BLACK);
@@ -267,7 +252,7 @@ public class MainWindow {
         appendtoPane(SWcardPane, rank2 + suit2, color2);
     }
 
-    public static void drawCardsCC(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2, String rank3, String suit3, java.awt.Color color3) {
+    public static void drawFlopCardsCC(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2, String rank3, String suit3, java.awt.Color color3) {
         CcardPane.setText("");
         appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
         appendtoPane(CcardPane, rank2 + suit2, color2);

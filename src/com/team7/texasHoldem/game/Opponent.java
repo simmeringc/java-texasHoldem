@@ -14,21 +14,13 @@ public class Opponent extends Player {
             int choiceIndex = random.nextInt(3);
             String choice = choices[choiceIndex];
             if (choice.equals("call")) {
-                System.out.println("Raising opponent");
-
                 return 1;
             } else if (choice.equals("raise")){
-                System.out.println("Raising opponent");
-
                 return 2 ;
-            } else { // fold
-                System.out.println("Folding opponent");
-
+            } else {// Fold
                 return -1;
             }
         } else {
-            System.out.println("Folding opponent");
-
             return -1;
         }
     }

@@ -16,7 +16,9 @@ public class Hand {
     private ArrayList<Player> calledPlayers = new ArrayList<Player>();
     private ArrayList<Player> defeatedPlayers = new ArrayList<Player>();
     private Deck deck;
-    private ArrayList<Card> tableCards = new ArrayList<Card>();
+    private ArrayList<Card> flopCards = new ArrayList<Card>();
+    private Card turnCard;
+    private Card riverCard;
     private Ranker ranker;
 
     public Hand (ArrayList<Player> players) {
@@ -47,49 +49,48 @@ public class Hand {
     }
 
     public void dealFlop() {
-        tableCards.add(deck.getCard());
-        tableCards.add(deck.getCard());
-        tableCards.add(deck.getCard());
+        flopCards.add(deck.getCard());
+        flopCards.add(deck.getCard());
+        flopCards.add(deck.getCard());
+        System.out.println("Drawing flop cards");
+        MainWindow.drawFlopCardsCC(flopCards.get(0).getRank(), flopCards.get(0).getSuit(), flopCards.get(0).getColor(), flopCards.get(1).getRank(), flopCards.get(1).getSuit(), flopCards.get(1).getColor(), flopCards.get(2).getRank(), flopCards.get(2).getSuit(), flopCards.get(2).getColor());
     }
 
     public void dealTurn() {
-        tableCards.add(deck.getCard());
+        turnCard = (deck.getCard());
     }
 
     public void dealRiver() {
-        tableCards.add(deck.getCard());
+        riverCard = deck.getCard();
     }
 
     public boolean doBetRound() {
         System.out.println("In doBetRound");
 
         currentBet = 0;
+
         while(activePlayers.size() > 0) {
             for (int i = 0; i < activePlayers.size(); i++) {
                 System.out.println("In doBetRound loop");
                 Player currentPlayer = activePlayers.get(i);
                 int choice = currentPlayer.getChoice();
-                System.out.println("Choice: " + Integer.toString(choice));
                 if (choice == -1) { //fold
                     System.out.println("Folding");
-
                     activePlayers.remove(currentPlayer);
                     foldedPlayers.add(currentPlayer);
                 } else if (choice == 1) { //call
-                    System.out.println("Callling");
-
+                    System.out.println("Calling");
                     pot += currentBet;
                     currentPlayer.removeChips(currentBet);
                     activePlayers.remove(currentPlayer);
                     calledPlayers.add(currentPlayer);
                 } else if (choice == 2) { //raise
                     System.out.println("Raising");
-
                     pot = pot + currentBet + 25;
                     currentPlayer.removeChips(currentBet + 25);
-                    for (Player calledPlayer : calledPlayers) {
-                        calledPlayers.remove(calledPlayer);
-                        activePlayers.add(calledPlayer);
+                    for (int j = 0; j < calledPlayers.size(); j++) {
+                        activePlayers.add(calledPlayers.get(j));
+                        calledPlayers.remove(calledPlayers.get(j));
                     }
                     activePlayers.remove(currentPlayer);
                     calledPlayers.add(currentPlayer);
@@ -97,35 +98,57 @@ public class Hand {
             }
             Game.updateChips(Game.player, Game.opponent1, Game.opponent2, Game.opponent3, pot);
         }
-        return calledPlayers.size() > 0;
+        return calledPlayers.size() > 1;
     }
 
     public ArrayList<Player> playHand() {
         dealPlayersCards();
         doAnte();
+
         System.out.println("Doing preflop bet round");
-
         boolean continueToFlop = doBetRound();
+        System.out.println("Back from preflop bet round");
         if (!continueToFlop) {
+            System.out.println("Returning defeated players");
             return defeatedPlayers;
         }
-        dealFlop();
-        boolean continueToTurn = doBetRound();
-        if (!continueToTurn) {
-            return defeatedPlayers;
-        }
-        dealTurn();
-        boolean continueToRiver = doBetRound();
-        if (!continueToRiver) {
-            return defeatedPlayers;
-        }
-        dealRiver();
-        boolean playersFoldedToWinner = doBetRound();
-        if (playersFoldedToWinner) {
-            return defeatedPlayers;
-        }
-        Player winningPlayer = ranker.determineWinningPlayer(calledPlayers);
 
+        dealFlop();
+        System.out.println("Doing postflop bet round");
+        boolean continueToTurn = doBetRound();
+        System.out.println("Back from postflop bet round");
+        if (!continueToTurn) {
+            calledPlayers.get(0).addChips(pot);
+            System.out.println("Returning defeated players");
+            return defeatedPlayers;
+        }
+        activePlayers = new ArrayList<Player>(calledPlayers);
+        calledPlayers.clear();
+
+        dealTurn();
+        System.out.println("Doing post turn bet round");
+        boolean continueToRiver = doBetRound();
+        System.out.println("Back from post turn bet round");
+        if (!continueToRiver) {
+            calledPlayers.get(0).addChips(pot);
+            System.out.println("Returning defeated players");
+            return defeatedPlayers;
+        }
+        activePlayers = new ArrayList<Player>(calledPlayers);
+        calledPlayers.clear();
+
+        dealRiver();
+        System.out.println("Doing post river bet round");
+        boolean playersFoldedToWinner = doBetRound();
+        System.out.println("Back from post river bet round");
+        if (playersFoldedToWinner) {
+            calledPlayers.get(0).addChips(pot);
+            System.out.println("Returning defeated players");
+            return defeatedPlayers;
+        }
+
+        Player winningPlayer = ranker.determineWinningPlayer(calledPlayers);
+        winningPlayer.addChips(pot);
         for (Player calledPlayer : calledPlayers) {
             if (calledPlayer.getChips() == 0 && calledPlayer != winningPlayer) {
                 defeatedPlayers.add(calledPlayer);
@@ -136,6 +159,8 @@ public class Hand {
                 defeatedPlayers.add(foldedPlayer);
             }
         }
+        System.out.println("Returning defeated players");
+
         return defeatedPlayers;
     }
 

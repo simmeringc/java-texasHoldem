@@ -14,6 +14,5 @@ import java.util.ArrayList;
 public class NewGameButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         Runner.initializeGame();
-        ButtonController.setNewGamePressedButtons();
     }
 }

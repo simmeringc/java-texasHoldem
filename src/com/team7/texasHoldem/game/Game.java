@@ -39,9 +39,10 @@ public class Game {
 
     public void playGame() {
         while (activePlayers.size() > 1) {
-            currentHand = new Hand(activePlayers);
+            currentHand = new Hand(new ArrayList<Player>(activePlayers));
 
             ArrayList<Player> handsDefeatedPlayers = currentHand.playHand();
+            System.out.println("handsDefeatedPlayers length: " + handsDefeatedPlayers.size());
             for (Player defeatedPlayer : handsDefeatedPlayers) {
                 activePlayers.remove(defeatedPlayer);
                 defeatedPlayers.add(defeatedPlayer);

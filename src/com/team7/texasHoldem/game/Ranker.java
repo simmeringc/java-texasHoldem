@@ -22,10 +22,11 @@ public class Ranker {
 	}
 	
 	public Player determineWinningPlayer(ArrayList<Player> callingPlayers){
+		System.out.println("determineWinningPlayer callingPlayers length: " + callingPlayers.size());
 		Player topPlayer = null;
 		ArrayList<Card> topCards = new ArrayList<Card>();
 		for(Player callingPlayer: callingPlayers){
-			topCards.add(determineHighCard(callingPlayer.getCards()));
+			topCards.add(callingPlayer.getHighCard());
 		}
 		Card topCard = determineHighCard(topCards);
 		for(Player callingPlayer : callingPlayers){
