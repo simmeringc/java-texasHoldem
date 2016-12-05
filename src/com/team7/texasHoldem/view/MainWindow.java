@@ -31,10 +31,10 @@ public class MainWindow {
     SystemLog systemLog = new SystemLog();
     //Ranker ranker = new Ranker();
 
-    Player player1 = new Player();
-    Player player2 = new Player();
-    Player player3 = new Player();
-    Player player4 = new Player();
+    Player player1 = new Player(1);
+    Player player2 = new Player(2);
+    Player player3 = new Player(3);
+    Player player4 = new Player(4);
     Game game = new Game(systemLog, player1, player2, player3, player4);
     Deck deck = game.getDeck();
 
@@ -281,6 +281,15 @@ public class MainWindow {
         appendtoPane(SWcardPane, rank1 + suit1, color1);
         appendtoPane(SWcardPane, rank2 + suit2, color2);
     }
+    private void drawCardsCC(String rank1, String suit1, java.awt.Color color1) {
+        CcardPane.setText("");
+        appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
+    }
+    private void drawCardsCC(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+        CcardPane.setText("");
+        appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
+        appendtoPane(CcardPane, rank2 + suit2, color2);
+    }
     private void drawCardsCC(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2, String rank3, String suit3, java.awt.Color color3) {
         CcardPane.setText("");
         appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
@@ -288,9 +297,31 @@ public class MainWindow {
         appendtoPane(CcardPane, rank3 + suit3, color3);
     }
 
+    public void revealHands() {
+        for (Player player : game.getPlayers()) {
+            Card[] cards = player.getCards();
+            String card1Rank = cards[0].getRank();
+            String card1Suit = cards[0].getSuit();
+            java.awt.Color card1Color = cards[0].getColor();
+            String card2Rank = cards[1].getRank();
+            String card2Suit = cards[1].getSuit();
+            java.awt.Color card2Color = cards[1].getColor();
+            if (player.getPlayerNumber() == 2) {
+                drawCardsNW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            }
+            if (player.getPlayerNumber() == 3) {
+                drawCardsNE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            }
+            if (player.getPlayerNumber() == 4) {
+                drawCardsSE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            }
+        }
+    }
+
 	class NewGameButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             setEditableCards(true);
+            game.setRound(0);
             systemLog.dealCards();
             game.deal();
             Card[] cards = player1.getCards();
@@ -306,11 +337,10 @@ public class MainWindow {
             drawCardsSE("?","",Color.BLACK,"?","",Color.RED);
             drawCardsCC("?","",Color.BLACK,"?","",Color.RED,"?","",Color.BLACK);
             initChips();
+            anteButton.setEnabled(true);
             foldButton.setEnabled(false);
             raiseButton.setEnabled(false);
             callButton.setEnabled(false);
-            setEditableCards(false);
-            
         }
     }
 
@@ -324,7 +354,7 @@ public class MainWindow {
                 drawChips();
             }
             anteButton.setEnabled(false);
-            foldButton.setEnabled(false);
+            foldButton.setEnabled(true);
             raiseButton.setEnabled(true);
             callButton.setEnabled(true);
         }
@@ -342,7 +372,7 @@ public class MainWindow {
             String card2Suit = cards[1].getSuit();
             java.awt.Color card2Color = Color.GRAY;
             System.out.println(card1Rank + card1Suit + card2Rank + card2Suit);
-            drawCardsSE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            drawCardsSW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
             anteButton.setEnabled(false);
             foldButton.setEnabled(false);
             raiseButton.setEnabled(false);
@@ -365,7 +395,54 @@ public class MainWindow {
     }
     class CallButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
+            if (game.getRound() == 0) {
+                game.callFlop();
+                Card[] cards = game.getTableCards();
+                systemLog.flop();
+                game.setRound(1);
+                String card1Rank = cards[0].getRank();
+                String card1Suit = cards[0].getSuit();
+                java.awt.Color card1Color = cards[0].getColor();
+                drawCardsCC(card1Rank, card1Suit, card1Color);
+
+                return;
+            }
+            if (game.getRound() == 1) {
+                game.betTurn();
+                Card[] cards = game.getTableCards();
+                systemLog.turn();
+                game.setRound(2);
+                String card1Rank = cards[0].getRank();
+                String card1Suit = cards[0].getSuit();
+                java.awt.Color card1Color = cards[0].getColor();
+                System.out.println(game.getTableCards());
+                String card2Rank = cards[1].getRank();
+                String card2Suit = cards[1].getSuit();
+                java.awt.Color card2Color = cards[1].getColor();
+                System.out.println(card1Rank+ card1Suit + card1Color + card2Rank+ card2Suit + card2Color);
+                drawCardsCC(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+                return;
+            }
+            if (game.getRound() == 2) {
+                game.betRiver();
+                Card[] cards = game.getTableCards();
+                systemLog.river();
+                game.setRound(3);
+                String card1Rank = cards[0].getRank();
+                String card1Suit = cards[0].getSuit();
+                java.awt.Color card1Color = cards[0].getColor();
+                String card2Rank = cards[1].getRank();
+                String card2Suit = cards[1].getSuit();
+                java.awt.Color card2Color = cards[1].getColor();
+                String card3Rank = cards[2].getRank();
+                String card3Suit = cards[2].getSuit();
+                java.awt.Color card3Color = cards[2].getColor();
+                drawCardsCC(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color, card3Rank, card3Suit, card3Color);
+                revealHands();
+                Player winner = game.getWinner();
+                systemLog.winner(winner.getPlayerNumber());
+                return;
+            }
         }
     }
 }
