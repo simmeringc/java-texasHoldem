@@ -318,6 +318,30 @@ public class MainWindow {
         }
     }
 
+    public void drawWinner(Player winner) {
+        for (Player player : game.getPlayers()) {
+            Card[] cards = player.getCards();
+            String card1Rank = cards[0].getRank();
+            String card1Suit = cards[0].getSuit();
+            java.awt.Color card1Color = Color.GREEN;
+            String card2Rank = cards[1].getRank();
+            String card2Suit = cards[1].getSuit();
+            java.awt.Color card2Color = Color.GREEN;
+            if (winner.getPlayerNumber() == 1) {
+                drawCardsNW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            }
+            if (winner.getPlayerNumber() == 2) {
+                drawCardsNW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            }
+            if (winner.getPlayerNumber() == 3) {
+                drawCardsNE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            }
+            if (winner.getPlayerNumber() == 4) {
+                drawCardsSE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+            }
+        }
+    }
+
 	class NewGameButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             setEditableCards(true);
@@ -441,6 +465,11 @@ public class MainWindow {
                 revealHands();
                 Player winner = game.getWinner();
                 systemLog.winner(winner.getPlayerNumber());
+                drawWinner(winner);
+                anteButton.setEnabled(true);
+                foldButton.setEnabled(false);
+                raiseButton.setEnabled(false);
+                callButton.setEnabled(false);
                 return;
             }
         }

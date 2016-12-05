@@ -28,7 +28,7 @@ public class Ranker {
 		for(int i = 0; i < players.size(); i++){
 			topCards[i] = players.get(i).getHighCard();
 		}
-		topCards[players.size()+1] = getHighCard(Game.getTableCards());
+		topCards[players.size()] = getHighCard(Game.getTableCards());
 		Card top = getHighCard(topCards);
 		for(int i = 0; i < players.size(); i++){
 			if (players.get(i).getHighCard() == top){
