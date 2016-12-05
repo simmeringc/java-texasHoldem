@@ -14,6 +14,7 @@ public class Game {
     private List<Player> activePlayers;
     private static Card[] tableCards = new Card[3];
     private int pot = 1000;
+    private int round = 0;
 
     public Game(SystemLog systemLog, Player player1, Player player2, Player player3, Player player4) {
         this.systemLog = systemLog;
@@ -56,6 +57,14 @@ public class Game {
 
     public Deck getDeck() {
         return deck;
+    }
+
+    public void setRound(int i) {
+        round = i;
+    }
+
+    public int getRound() {
+        return round;
     }
 
     public List<Player> getActivePlayers() {

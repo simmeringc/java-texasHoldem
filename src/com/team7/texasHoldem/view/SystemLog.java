@@ -41,5 +41,17 @@ public class SystemLog {
     public void raise(String s) {
         systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " " + s + " Raised 25");
     }
+    public void flop() {
+        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " flop");
+    }
+    public void turn() {
+        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " turn");
+    }
+    public void river() {
+        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " river");
+    }
+    public void winner(int playerNumber) {
+        systemLogTextArea.setText(systemLogTextArea.getText() + "\n" + timeStamp() + " player" + playerNumber + " is the winner!");
+    }
 }
 

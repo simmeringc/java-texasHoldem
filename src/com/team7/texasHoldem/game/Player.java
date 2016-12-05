@@ -8,6 +8,15 @@ public class Player {
     private Card[] cards = new Card[2];
     private Card highCard = null;
     private int chips = 0;
+    private int playerNumber;
+
+    public Player(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
 
     public Card getHighCard() {
         return highCard;
