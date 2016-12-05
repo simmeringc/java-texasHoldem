@@ -59,8 +59,4 @@ public class Card {
     public String toString() {
         return "Suit: " + suit + ", Rank: " + rank;
     }
-
-//    public Integer getRankToInt() {
-//        return rank.ordinal();
-//    }
 }

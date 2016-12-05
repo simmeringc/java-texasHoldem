@@ -1,9 +1,5 @@
 package com.team7.texasHoldem.view;
-import com.team7.texasHoldem.game.Card;
-import com.team7.texasHoldem.game.Ranker;
-import com.team7.texasHoldem.game.Deck;
-import com.team7.texasHoldem.game.Game;
-import com.team7.texasHoldem.game.Player;
+import com.team7.texasHoldem.game.*;
 
 import javax.swing.*;
 
@@ -18,27 +14,17 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.util.ArrayList;
 
 public class MainWindow {
 
-    JFrame frame;
-    JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, cardPanel, controlPanel, NWPanel, NEPanel , SWPanel, SEPanel, CPanel;
-    JButton dealButton, anteButton, foldButton, raiseButton, callButton;
-    JScrollPane scroll;
-    JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane, NWChipPane, NEChipPane, SWChipPane , SEChipPane, CPot;
+    public static JFrame frame;
+    public static JPanel inputPanel, logPanel, topCardPanel, centerCardPanel, bottomCardPanel, cardPanel, controlPanel, NWPanel, NEPanel , SWPanel, SEPanel, CPanel;
+    public static JButton dealButton, foldButton, raiseButton, callButton;
+    public static JScrollPane scroll;
+    public static JTextPane NWcardPane, NEcardPane, SEcardPane, SWcardPane, CcardPane, NWChipPane, NEChipPane, SWChipPane , SEChipPane, CPot;
 
-    SystemLog systemLog = new SystemLog();
-    //Ranker ranker = new Ranker();
-
-    Player player1 = new Player();
-    Player player2 = new Player();
-    Player player3 = new Player();
-    Player player4 = new Player();
-    Game game = new Game(systemLog, player1, player2, player3, player4);
-    Deck deck = game.getDeck();
-
-    public static void main(String[] args) {
+    public static void initialize() {
         //Take the menu bar off the JFrame
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
@@ -49,11 +35,12 @@ public class MainWindow {
         mainWindow.buildGUI();
         mainWindow.initializeSound();
         mainWindow.drawGameInit();
+
     }
 
-    public void initializeSound() {
+    public static void initializeSound() {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./../music.wav"));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(MainWindow.class.getResource("./../music.wav"));
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -62,7 +49,7 @@ public class MainWindow {
         }
     }
 
-    public void buildGUI() {
+    public static void buildGUI() {
 
         //Create frame
         frame = new JFrame();
@@ -85,9 +72,6 @@ public class MainWindow {
         dealButton = new JButton("New Game");
         dealButton.addActionListener(new NewGameButtonListener());
 
-        anteButton = new JButton("Ante");
-        anteButton.addActionListener(new AnteButtonListener());
-
         foldButton = new JButton("Fold");
         foldButton.addActionListener(new FoldButtonListener());
 
@@ -101,13 +85,12 @@ public class MainWindow {
         //TODO: 
 
         inputPanel.add(dealButton);
-        inputPanel.add(anteButton);
         inputPanel.add(foldButton);
         inputPanel.add(raiseButton);
         inputPanel.add(callButton);
 
         //Instantiate logPanel interface
-        scroll = new JScrollPane(systemLog.getSystemLogTextArea());
+//        scroll = new JScrollPane(systemLog.getSystemLogTextArea());
 
         NWPanel = new JPanel();
         NEPanel = new JPanel();
@@ -186,7 +169,7 @@ public class MainWindow {
         CPot.setFont(font2);
 
         //Append logPanel interface
-        logPanel.add(scroll);
+//        logPanel.add(scroll);
 
         //Add panels to frame
         frame.setLayout(new BorderLayout());
@@ -202,7 +185,7 @@ public class MainWindow {
 
     }
 
-    private void appendtoPane(JTextPane tp, String msg, java.awt.Color c) {
+    public static void appendtoPane(JTextPane tp, String msg, java.awt.Color c) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
@@ -215,7 +198,8 @@ public class MainWindow {
         tp.replaceSelection(msg);
 
     }
-    private void setEditableCards(Boolean bool) {
+
+    public static void setEditableCards(Boolean bool) {
         NWcardPane.setEditable(bool);
         NEcardPane.setEditable(bool);
         SEcardPane.setEditable(bool);
@@ -223,7 +207,24 @@ public class MainWindow {
         CcardPane.setEditable(bool);
     }
 
-    private void drawGameInit() {
+    public static void setCards(ArrayList<Card> playerCards) {
+        MainWindow.setEditableCards(true);
+        String card1Rank = playerCards.get(0).getRank();
+        String card1Suit = playerCards.get(0).getSuit();
+        Color card1Color = playerCards.get(0).getColor();
+        String card2Rank = playerCards.get(1).getRank();
+        String card2Suit = playerCards.get(1).getSuit();
+        Color card2Color = playerCards.get(1).getColor();
+        MainWindow.drawCardsSW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
+        MainWindow.drawCardsNW("?","", Color.BLACK,"?","",Color.RED);
+        MainWindow.drawCardsNE("?","",Color.BLACK,"?","",Color.RED);
+        MainWindow.drawCardsSE("?","",Color.BLACK,"?","",Color.RED);
+        MainWindow.drawCardsCC("?","",Color.BLACK,"?","",Color.RED,"?","",Color.BLACK);
+        MainWindow.setEditableCards(false);
+    }
+
+
+    public static void drawGameInit() {
         appendtoPane(NWcardPane, "0", Color.BLACK);
         appendtoPane(NWcardPane, "0", Color.RED);
 
@@ -241,125 +242,43 @@ public class MainWindow {
         appendtoPane(CcardPane, "0", Color.BLACK);
     }
 
-    public void initChips() {
-        NWChipPane.setText(player4.resetChips());
-        NEChipPane.setText(player3.resetChips());
-        SEChipPane.setText(player2.resetChips());
-        SWChipPane.setText(player1.resetChips());
-        CPot.setText(game.resetPot());
-    }
-
-    public void drawChips() {
-        NWChipPane.setText(player4.getChips());
-        NEChipPane.setText(player3.getChips());
-        SEChipPane.setText(player2.getChips());
-        SWChipPane.setText(player1.getChips());
-        CPot.setText(game.getPot());
-    }
-
-    private void drawCardsNW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+    public static void drawCardsNW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
         NWcardPane.setText("");
         appendtoPane(NWcardPane, rank1 + suit1, color1);
         appendtoPane(NWcardPane, rank2 + suit2, color2);
     }
 
-    private void drawCardsNE(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+    public static void drawCardsNE(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
         NEcardPane.setText("");
         appendtoPane(NEcardPane, rank1 + suit1, color1);
         appendtoPane(NEcardPane, rank2 + suit2, color2);
     }
 
-    private void drawCardsSE(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+    public static void drawCardsSE(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
         SEcardPane.setText("");
         appendtoPane(SEcardPane, rank1 + suit1, color1);
         appendtoPane(SEcardPane, rank2 + suit2, color2);
     }
 
-    private void drawCardsSW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
+    public static void drawCardsSW(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2) {
         SWcardPane.setText("");
 
         appendtoPane(SWcardPane, rank1 + suit1, color1);
         appendtoPane(SWcardPane, rank2 + suit2, color2);
     }
-    private void drawCardsCC(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2, String rank3, String suit3, java.awt.Color color3) {
+
+    public static void drawCardsCC(String rank1, String suit1, java.awt.Color color1, String rank2, String suit2, java.awt.Color color2, String rank3, String suit3, java.awt.Color color3) {
         CcardPane.setText("");
         appendtoPane(CcardPane, "\n" + rank1 + suit1, color1);
         appendtoPane(CcardPane, rank2 + suit2, color2);
         appendtoPane(CcardPane, rank3 + suit3, color3);
     }
 
-	class NewGameButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            setEditableCards(true);
-            systemLog.dealCards();
-            game.deal();
-            Card[] cards = player1.getCards();
-            String card1Rank = cards[0].getRank();
-            String card1Suit = cards[0].getSuit();
-            java.awt.Color card1Color = cards[0].getColor();
-            String card2Rank = cards[1].getRank();
-            String card2Suit = cards[1].getSuit();
-            java.awt.Color card2Color = cards[1].getColor();
-            drawCardsSW(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
-            drawCardsNW("?","",Color.BLACK,"?","",Color.RED);
-            drawCardsNE("?","",Color.BLACK,"?","",Color.RED);
-            drawCardsSE("?","",Color.BLACK,"?","",Color.RED);
-            drawCardsCC("?","",Color.BLACK,"?","",Color.RED,"?","",Color.BLACK);
-            initChips();
-            foldButton.setEnabled(false);
-            raiseButton.setEnabled(false);
-            callButton.setEnabled(false);
-            setEditableCards(false);
-            
-        }
-    }
-
-
-    class AnteButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
-            for (Player player : game.getActivePlayers()) {
-                player.removeChips(25);
-                game.increasePot(25);
-                drawChips();
-            }
-            anteButton.setEnabled(false);
-            foldButton.setEnabled(true);
-            raiseButton.setEnabled(true);
-            callButton.setEnabled(true);
-        }
-    }
-
-    class FoldButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            systemLog.fold();
-            game.removeActivePlayer(player1);
-            anteButton.setEnabled(false);
-            foldButton.setEnabled(false);
-            raiseButton.setEnabled(false);
-            callButton.setEnabled(false);
-            Card[] cards = player1.getCards();
-            String card1Rank = cards[0].getRank();
-            String card1Suit = cards[0].getSuit();
-            java.awt.Color card1Color = Color.GRAY;
-            String card2Rank = cards[1].getRank();
-            String card2Suit = cards[1].getSuit();
-            java.awt.Color card2Color = Color.GRAY;
-            System.out.println(card1Rank + card1Suit + card2Rank + card2Suit);
-            drawCardsSE(card1Rank, card1Suit, card1Color, card2Rank, card2Suit, card2Color);
-        }
-    }
-
-    class RaiseButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
-        }
-    }
-    class CallButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            systemLog.buttonPressed();
-        }
+    public static void drawChips(String playerChips, String opponent1Chips, String opponent2Chips, String opponent3Chips, String pot) {
+        SWChipPane.setText(playerChips);
+        NWChipPane.setText(opponent1Chips);
+        NEChipPane.setText(opponent2Chips);
+        SEChipPane.setText(opponent3Chips);
+        CPot.setText(pot);
     }
 }
-
-

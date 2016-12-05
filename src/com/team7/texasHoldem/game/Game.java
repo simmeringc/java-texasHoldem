@@ -1,94 +1,65 @@
 package com.team7.texasHoldem.game;
+import com.team7.texasHoldem.view.MainWindow;
 import com.team7.texasHoldem.view.SystemLog;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
 
-    private SystemLog systemLog;
-    private Deck deck;
-    private Ranker ranker;
+    private ArrayList<Player> activePlayers;
+    private ArrayList<Player> defeatedPlayers;
+    public static Player player;
+    public static Opponent opponent1;
+    public static Opponent opponent2;
+    public static Opponent opponent3;
+    private static Hand currentHand;
 
-    private List<Player> players;
-    private List<Player> activePlayers;
-    private List<Card> tableCards;
-    private int pot = 1000;
-
-    public Game(SystemLog systemLog, Player player1, Player player2, Player player3, Player player4) {
-        this.systemLog = systemLog;
-        this.deck = new Deck(systemLog);
-        tableCards = new ArrayList<Card>();
-        players = new ArrayList<Player>();
-        ranker = new Ranker();
+    public Game() {
         activePlayers = new ArrayList<Player>();
+        defeatedPlayers = new ArrayList<Player>();
 
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
-        players.add(player4);
-    }
+        player = new Player();
+        opponent1 = new Opponent();
+        opponent2 = new Opponent();
+        opponent3 = new Opponent();
 
-    public List<Player> getPlayers(){
-    	return players;
-    }
-    
-    public Player getWinner(){
-    	return ranker.getTopPlayer(getPlayers());
-    }
-    
-    public String resetPot() {
-        pot = 0;
-        return "0";
-    }
+        activePlayers.add(player);
+        activePlayers.add(opponent1);
+        activePlayers.add(opponent2);
+        activePlayers.add(opponent3);
 
-    public void increasePot(int i) {
-        pot = pot + i;
+        for (Player activePlayer : activePlayers) {
+            activePlayer.resetChips();
+        }
+
+        updateChips(player, opponent1, opponent2, opponent3, 0);
     }
 
-    public String getPot() {
-        String potToString = Integer.toString(pot);
-        return potToString;
-    }
+    public void playGame() {
+        while (activePlayers.size() > 1) {
+            currentHand = new Hand(activePlayers);
 
-    public Deck getDeck() {
-        return deck;
-    }
-
-    public List<Player> getActivePlayers() {
-        return activePlayers;
-    }
-
-    public void removeActivePlayer(Player player) {
-        activePlayers.remove(player);
-    }
-
-    public void deal() {
-        for (Player player : players) {
-            player.getCards()[0] = deck.getCard();
-            player.getCards()[1] = deck.getCard();
-            if (!activePlayers.contains(player)) {
-                activePlayers.add(player);
+            ArrayList<Player> handsDefeatedPlayers = currentHand.playHand();
+            for (Player defeatedPlayer : handsDefeatedPlayers) {
+                activePlayers.remove(defeatedPlayer);
+                defeatedPlayers.add(defeatedPlayer);
             }
         }
-        ranker.setHighCards(getPlayers());
     }
 
-    public void callFlop() {
-        deck.getCard(); //Burn Card
-        tableCards.add(deck.getCard());
-        tableCards.add(deck.getCard());
-        tableCards.add(deck.getCard());
+    public static void updateChips (Player player, Player opponent1, Player opponent2, Player opponent3, int pot) {
+        String playerChips = Integer.toString(player.getChips());
+        String opponent1Chips = Integer.toString(opponent1.getChips());
+        String opponent2Chips = Integer.toString(opponent2.getChips());
+        String opponent3Chips = Integer.toString(opponent3.getChips());
+        String potChips = Integer.toString(pot);
+        MainWindow.drawChips(playerChips, opponent1Chips, opponent2Chips, opponent3Chips, potChips);
     }
 
-    public void betTurn() {
-        deck.getCard();
-        tableCards.add(deck.getCard());
-    }
-
-    public void betRiver() {
-        deck.getCard();
-        tableCards.add(deck.getCard());
+    public static void setCards () {
+        MainWindow.setCards(player.getCards());
     }
 
 }

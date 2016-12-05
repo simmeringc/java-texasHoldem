@@ -1,47 +1,39 @@
 package com.team7.texasHoldem.game;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Ranker {
 	
-	public Card getHighCard(Card[] cards){
-		//Card[] cards = player.getCards();
-		Card max = cards[0];
-		
-		for(int i = 0; i < cards.length; i++){
-			if(cards[i].getRankToInt() == max.getRankToInt()){
-				if(cards[i].getSuitToInt() > max.getSuitToInt()){
-					max = cards[i];
+	public Card determineHighCard(ArrayList<Card> cards){
+        Card highCard = null;
+        int maxRank = 0;
+        int maxSuit = 0;
+		for(Card card : cards){
+			if (card.getRankToInt() > maxRank) {
+                highCard = card;
+            } else if (card.getRankToInt() == maxRank) {
+				if(card.getSuitToInt() > maxSuit){
+					highCard = card;
 				}
 			}
-			else if (cards[i].getRankToInt() > max.getRankToInt()) {
-		        max = cards[i];
-		      }			
 		}
-		return max;
+		return highCard;
 
 	}
 	
-	public Player getTopPlayer(List<Player> players){
+	public Player determineWinningPlayer(ArrayList<Player> callingPlayers){
 		Player topPlayer = null;
-		Card[] topCards = new Card[players.size()];
-		for(int i = 0; i < players.size(); i++){
-			topCards[i] = players.get(i).getHighCard();
+		ArrayList<Card> topCards = new ArrayList<Card>();
+		for(Player callingPlayer: callingPlayers){
+			topCards.add(determineHighCard(callingPlayer.getCards()));
 		}
-		Card top = getHighCard(topCards);
-		for(int i = 0; i < players.size(); i++){
-			if (players.get(i).getHighCard() == top){
-				topPlayer = players.get(i);
+		Card topCard = determineHighCard(topCards);
+		for(Player callingPlayer : callingPlayers){
+			if (determineHighCard(callingPlayer.getCards()) == topCard){
+				topPlayer = callingPlayer;
+                break;
 			}
 		}
 		return topPlayer;
 	}
-	
-	
-	public void setHighCards(List<Player> players){
-		for(int i = 0; i < players.size(); i++){
-			players.get(i).setHighCard(getHighCard(players.get(i).getCards()));
-		}
-	}
-
 }
